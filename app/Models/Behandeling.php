@@ -63,9 +63,13 @@ class Behandeling extends Model
         }
     }
 
-    public static function updatePrice($id, $newPrice)
+    public static function updatePrice(int $id, float $newPrice)
     {
-        // DB::selectOne geeft het object met 'success' en 'message' uit de procedure terug
-        return DB::selectOne('CALL UpdateProductPrijs(?, ?)', [$id, $newPrice]);
+        try {
+            return DB::selectOne('CALL UpdateProductPrijs(?, ?)', [$id, $newPrice]);
+        } catch (\Exception $e) {
+            Log::error('Error in UpdateProductVerkoopprijs: '.$e->getMessage());
+            throw $e; // Zorgt dat de controller de fout kan vangen
+        }
     }
 }
