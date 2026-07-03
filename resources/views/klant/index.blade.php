@@ -77,7 +77,7 @@
         </div>
 
         {{-- Customers Table / Grid --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="overflow-x-auto w-full">
                 <table class="w-full text-left border-collapse">
                     <thead>
@@ -92,7 +92,7 @@
                             <th class="py-4 px-6 text-center">Actie</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 text-sm text-gray-700 font-medium">
+                    <tbody class="divide-y divide-gray-300 text-sm text-gray-700 font-medium">
                         @forelse ($klanten as $klant)
                             <tr class="hover:bg-gray-50 transition duration-75">
                                 <td class="py-4 px-6 font-bold text-gray-900">{{ $klant->Naam }}</td>
