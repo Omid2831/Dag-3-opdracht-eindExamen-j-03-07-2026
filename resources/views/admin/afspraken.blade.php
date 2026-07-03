@@ -15,38 +15,65 @@
             </h1>
 
             <!-- Filter Section -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+            <form method="GET" action="{{ route('admin.afspraken') }}" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
                 <div class="flex justify-end items-end space-x-3">
                     <div class="flex flex-col">
-                        <label class="text-xs font-semibold text-gray-500 mb-1.5">Status selecteren</label>
-                        <select class="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white w-64">
-                            <option>Alle statussen</option>
-                            <option>Behandeld</option>
-                            <option>Inbehandeling</option>
-                            <option>Geannuleerd</option>
+                        <label for="status" class="text-xs font-semibold text-gray-500 mb-1.5">Status selecteren</label>
+                        <select name="status" id="status" class="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white w-64">
+                            <option value="Alle statussen" {{ ($selectedStatus ?? 'Alle statussen') === 'Alle statussen' ? 'selected' : '' }}>Alle statussen</option>
+                            <option value="Inbehandeling" {{ ($selectedStatus ?? '') === 'Inbehandeling' ? 'selected' : '' }}>Inbehandeling</option>
+                            <option value="Behandeld" {{ ($selectedStatus ?? '') === 'Behandeld' ? 'selected' : '' }}>Behandeld</option>
+                            <option value="Verzet" {{ ($selectedStatus ?? '') === 'Verzet' ? 'selected' : '' }}>Verzet</option>
+                            <option value="Geannuleerd" {{ ($selectedStatus ?? '') === 'Geannuleerd' ? 'selected' : '' }}>Geannuleerd</option>
                         </select>
                     </div>
-                    <button class="bg-[#b91c1c] hover:bg-red-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
+                    <button type="submit" class="bg-[#b91c1c] hover:bg-red-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
                         Maak selectie
                     </button>
-                    <button class="bg-slate-500 hover:bg-slate-600 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
+                    <a href="{{ route('admin.afspraken') }}" class="bg-slate-500 hover:bg-slate-600 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm text-center inline-block">
                         Reset
-                    </button>
+                    </a>
                 </div>
-            </div>
+            </form>
 
             <!-- List Section -->
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-sm text-gray-400 font-semibold">Gevonden afspraken - 6 afspraak(en)</span>
-                    
-                    <!-- Pagination -->
-                    <div class="flex items-center space-x-1 text-xs">
-                        <a href="#" class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-400 hover:bg-gray-50">‹</a>
-                        <a href="#" class="px-3 py-1.5 bg-[#b91c1c] text-white rounded font-bold">1</a>
-                        <a href="#" class="px-3 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">2</a>
-                        <a href="#" class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-400 hover:bg-gray-50">›</a>
+                <div class="grid grid-cols-1 sm:grid-cols-3 items-center gap-4 mb-6 w-full">
+                    <div class="text-left">
+                        <span class="text-sm text-gray-400 font-semibold">Gevonden afspraken - {{ $afspraken->total() }} afspraak(en)</span>
                     </div>
+                    
+                    <div class="flex justify-center">
+                        <!-- Pagination -->
+                        @if($afspraken->hasPages())
+                        <div class="flex items-center space-x-1 text-xs">
+                            {{-- Previous Page Link --}}
+                            @if($afspraken->onFirstPage())
+                                <span class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-300 cursor-not-allowed">‹</span>
+                            @else
+                                <a href="{{ $afspraken->previousPageUrl() }}" class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">‹</a>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @foreach($afspraken->getUrlRange(1, $afspraken->lastPage()) as $page => $url)
+                                @if($page == $afspraken->currentPage())
+                                    <span class="px-3 py-1.5 bg-[#b91c1c] text-white rounded font-bold">{{ $page }}</span>
+                                @else
+                                    <a href="{{ $url }}" class="px-3 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">{{ $page }}</a>
+                                @endif
+                            @endforeach
+
+                            {{-- Next Page Link --}}
+                            @if($afspraken->hasMorePages())
+                                <a href="{{ $afspraken->nextPageUrl() }}" class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">›</a>
+                            @else
+                                <span class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-300 cursor-not-allowed">›</span>
+                            @endif
+                        </div>
+                        @endif
+                    </div>
+                    
+                    <div></div>
                 </div>
 
                 <!-- Table -->
@@ -66,78 +93,33 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 text-gray-700">
-                            <!-- Row 1 -->
+                            @forelse($afspraken as $afspraak)
                             <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-4 px-4 font-semibold text-gray-900">Ahmed Mansouri</td>
-                                <td class="py-4 px-4 text-gray-600">Lisa van Dijk</td>
-                                <td class="py-4 px-4 text-gray-600">Combi behandelingen</td>
-                                <td class="py-4 px-4 text-gray-600">15-07-2026</td>
-                                <td class="py-4 px-4 text-gray-600">12:30</td>
-                                <td class="py-4 px-4 text-gray-600">90 min</td>
-                                <td class="py-4 px-4 text-gray-600">14:00</td>
+                                <td class="py-4 px-4 font-semibold text-gray-900">{{ $afspraak->KlantNaam }}</td>
+                                <td class="py-4 px-4 text-gray-600">{{ $afspraak->MedewerkerNaam }}</td>
+                                <td class="py-4 px-4 text-gray-600">{{ $afspraak->BehandelingNaam }}</td>
+                                <td class="py-4 px-4 text-gray-600">{{ date('d-m-Y', strtotime($afspraak->Datum)) }}</td>
+                                <td class="py-4 px-4 text-gray-600">{{ date('H:i', strtotime($afspraak->Starttijd)) }}</td>
+                                <td class="py-4 px-4 text-gray-600">{{ $afspraak->Duur }} min</td>
+                                <td class="py-4 px-4 text-gray-600">{{ date('H:i', strtotime($afspraak->Eindtijd)) }}</td>
                                 <td class="py-4 px-4">
-                                    <span class="text-red-600 font-medium">Geannuleerd</span>
+                                    <span class="font-medium @if($afspraak->Status === 'Geannuleerd') text-red-600 @elseif($afspraak->Status === 'Inbehandeling') text-orange-600 @else text-green-600 @endif">
+                                        {{ $afspraak->Status }}
+                                    </span>
                                 </td>
                                 <td class="py-4 px-4 text-center">
-                                    <a href="#" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
+                                    <a href="{{ route('admin.afspraken.show', $afspraak->Id) }}" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
                                         Details
                                     </a>
                                 </td>
                             </tr>
-                            <!-- Row 2 -->
-                            <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-4 px-4 font-semibold text-gray-900">Saskia de Boer</td>
-                                <td class="py-4 px-4 text-gray-600">Mohamed El Idrissi</td>
-                                <td class="py-4 px-4 text-gray-600">Knippen</td>
-                                <td class="py-4 px-4 text-gray-600">10-07-2026</td>
-                                <td class="py-4 px-4 text-gray-600">15:00</td>
-                                <td class="py-4 px-4 text-gray-600">30 min</td>
-                                <td class="py-4 px-4 text-gray-600">15:30</td>
-                                <td class="py-4 px-4">
-                                    <span class="text-orange-600 font-medium">Inbehandeling</span>
-                                </td>
-                                <td class="py-4 px-4 text-center">
-                                    <a href="#" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
-                                        Details
-                                    </a>
+                            @empty
+                            <tr>
+                                <td colspan="9" class="py-8 text-center text-gray-500 font-medium">
+                                    Er zijn geen afspraken bekend die de geselecteerde status hebben
                                 </td>
                             </tr>
-                            <!-- Row 3 -->
-                            <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-4 px-4 font-semibold text-gray-900">Daan Visser</td>
-                                <td class="py-4 px-4 text-gray-600">Youssef Benali</td>
-                                <td class="py-4 px-4 text-gray-600">Permanent</td>
-                                <td class="py-4 px-4 text-gray-600">10-07-2026</td>
-                                <td class="py-4 px-4 text-gray-600">13:30</td>
-                                <td class="py-4 px-4 text-gray-600">120 min</td>
-                                <td class="py-4 px-4 text-gray-600">15:30</td>
-                                <td class="py-4 px-4">
-                                    <span class="text-green-600 font-medium">Behandeld</span>
-                                </td>
-                                <td class="py-4 px-4 text-center">
-                                    <a href="#" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
-                                        Details
-                                    </a>
-                                </td>
-                            </tr>
-                            <!-- Row 4 -->
-                            <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-4 px-4 font-semibold text-gray-900">Marieke van den Berg</td>
-                                <td class="py-4 px-4 text-gray-600">Lisa van Dijk</td>
-                                <td class="py-4 px-4 text-gray-600">Knippen</td>
-                                <td class="py-4 px-4 text-gray-600">10-07-2026</td>
-                                <td class="py-4 px-4 text-gray-600">14:00</td>
-                                <td class="py-4 px-4 text-gray-600">30 min</td>
-                                <td class="py-4 px-4 text-gray-600">14:30</td>
-                                <td class="py-4 px-4">
-                                    <span class="text-red-600 font-medium">Geannuleerd</span>
-                                </td>
-                                <td class="py-4 px-4 text-center">
-                                    <a href="#" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
-                                        Details
-                                    </a>
-                                </td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
