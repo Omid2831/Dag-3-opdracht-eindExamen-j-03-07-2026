@@ -23,6 +23,7 @@ class KlantController extends Controller
      */
     public function __construct(KlantModel $klantModel)
     {
+        // Model injectie via constructor
         $this->klantModel = $klantModel;
     }
 
@@ -34,10 +35,11 @@ class KlantController extends Controller
      */
     public function index(Request $request): View
     {
+        // Zoekterm voor postcode ophalen uit het GET-request
         $postcode = $request->input('postcode');
         $klanten = $this->klantModel->read($postcode);
 
-        // Client-side pagination (4 items per page)
+        // Omdat we stored procedures gebruiken doen we handmatige paginering (4 per pagina)
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 4;
         $col = collect($klanten);
@@ -68,12 +70,13 @@ class KlantController extends Controller
      */
     public function show(int $id)
     {
+        // Haal klant details op via de readById methode in het model
         $klant = $this->klantModel->readById($id);
 
         if (empty((array)$klant)) {
             return redirect()
                 ->route('klant.index')
-                ->with('error', 'Customer not found.');
+                ->with('error', 'Klant niet gevonden.');
         }
 
         return view('klant.show', compact('klant'));
@@ -87,12 +90,13 @@ class KlantController extends Controller
      */
     public function edit(int $id)
     {
+        // Details ophalen om het wijzigingsformulier vooraf in te vullen
         $klant = $this->klantModel->readById($id);
 
         if (empty((array)$klant)) {
             return redirect()
                 ->route('klant.index')
-                ->with('error', 'Customer not found.');
+                ->with('error', 'Klant niet gevonden.');
         }
 
         return view('klant.edit', compact('klant'));
@@ -107,6 +111,7 @@ class KlantController extends Controller
      */
     public function update(Request $request, int $id): RedirectResponse
     {
+        // Valideer alle invoervelden van het formulier
         $request->validate([
             'Naam' => 'required|string|max:100',
             'Bijzonderheden' => 'required|string|max:255',
@@ -119,7 +124,7 @@ class KlantController extends Controller
             'Mobiel' => 'required|string|max:20',
         ]);
 
-        // Uniqueness validation on contact email
+        // Handmatige uniekheidscontrole op e-mailadres voor andere actieve klanten
         $existing = DB::select('
             SELECT 1 FROM Contact c
             JOIN KlantPerContact kpc ON c.Id = kpc.ContactId
@@ -134,7 +139,7 @@ class KlantController extends Controller
                 ->with('error', 'Klantgegevens zijn niet bijgewerkt.');
         }
 
-        // Split Name into Voornaam and Achternaam by first space
+        // De ingevoerde naam splitsen we op de eerste spatie in Voornaam en Achternaam
         $name = $request->input('Naam');
         $parts = explode(' ', trim($name), 2);
         $voornaam = $parts[0];
@@ -155,6 +160,7 @@ class KlantController extends Controller
             'Mobiel' => $request->input('Mobiel')
         ];
 
+        // Voer de update uit via de model methode
         $success = $this->klantModel->update($id, $data);
 
         if ($success) {
