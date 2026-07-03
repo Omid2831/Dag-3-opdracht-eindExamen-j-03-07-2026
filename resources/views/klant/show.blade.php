@@ -9,7 +9,7 @@
 
         {{-- Heading --}}
         <h1 class="text-3xl font-extrabold text-[#b91c1c] mb-6">
-            Klantdetail {{ trim($klant->Voornaam . ' ' . $klant->Tussenvoegsel . ' ' . $klant->Achternaam) }}
+            Klantdetail {{ trim(implode(' ', array_filter([$klant->Voornaam, $klant->Tussenvoegsel, $klant->Achternaam]))) }}
         </h1>
 
         {{-- Details Card --}}
@@ -18,7 +18,7 @@
                 {{-- Naam --}}
                 <div class="grid grid-cols-3 py-3.5">
                     <span class="text-gray-500">Naam</span>
-                    <span class="col-span-2 text-gray-900 font-semibold">{{ trim($klant->Voornaam . ' ' . $klant->Tussenvoegsel . ' ' . $klant->Achternaam) }}</span>
+                    <span class="col-span-2 text-gray-900 font-semibold">{{ trim(implode(' ', array_filter([$klant->Voornaam, $klant->Tussenvoegsel, $klant->Achternaam]))) }}</span>
                 </div>
                 {{-- Relatienummer --}}
                 <div class="grid grid-cols-3 py-3.5">
