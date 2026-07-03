@@ -22,26 +22,56 @@
         <h1 class="text-3xl font-extrabold text-[#b91c1c] mb-6">Overzicht klanten</h1>
 
         {{-- Search Card --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-            <form method="GET" action="{{ route('admin.klanten') }}" class="flex flex-col md:flex-row md:items-end md:justify-end gap-4">
-                <div class="w-full md:max-w-xs">
-                    <label for="postcode" class="block text-sm font-bold text-gray-700 mb-1.5">Postcode zoeken</label>
-                    <input type="text" name="postcode" id="postcode" value="{{ request('postcode') }}" placeholder="Bijv. 3512AB" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 flex justify-end">
+            <form method="GET" action="{{ route('admin.klanten') }}" class="flex items-end gap-3">
+                <div class="w-56">
+                    <label for="postcode" class="block text-xs font-bold text-gray-700 mb-1.5">Postcode zoeken</label>
+                    <input type="text" name="postcode" id="postcode" value="{{ request('postcode') }}" placeholder="Bijv. 3512AB" class="w-full h-9 text-xs rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                 </div>
-                <div class="flex gap-2">
-                    <button type="submit" class="bg-[#b91c1c] hover:bg-[#981414] text-white font-bold py-2 px-6 rounded-lg transition duration-150 shadow-sm">
-                        Toon klanten
-                    </button>
-                    <a href="{{ route('admin.klanten') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-lg transition duration-150 border border-gray-200">
-                        Reset
-                    </a>
-                </div>
+                <button type="submit" class="bg-[#b91c1c] hover:bg-[#981414] text-white text-xs font-bold h-9 px-4 rounded-lg transition duration-150 shadow-sm">
+                    Toon klanten
+                </button>
+                <a href="{{ route('admin.klanten') }}" class="bg-[#6b7280] hover:bg-[#4b5563] text-white text-xs font-bold h-9 px-4 flex items-center justify-center rounded-lg transition duration-150 shadow-sm">
+                    Reset
+                </a>
             </form>
         </div>
 
-        {{-- Count Info --}}
-        <div class="text-sm font-semibold text-gray-600 mb-4">
-            Gevonden klanten - {{ $klanten->total() }} klant(en)
+        {{-- Count Info & Centered Pagination Row --}}
+        <div class="flex items-center justify-between mb-4">
+            <div class="text-xs font-bold text-gray-500 w-[200px]">
+                Gevonden klanten - {{ $klanten->total() }} klant(en)
+            </div>
+            
+            {{-- Custom Centered Pagination --}}
+            @if ($klanten->hasPages())
+                <div class="flex items-center gap-1.5">
+                    {{-- Previous Page Link --}}
+                    @if ($klanten->onFirstPage())
+                        <span class="w-7 h-7 flex items-center justify-center rounded bg-gray-50 text-gray-400 text-xs border border-gray-200 cursor-not-allowed">&lt;</span>
+                    @else
+                        <a href="{{ $klanten->previousPageUrl() }}" class="w-7 h-7 flex items-center justify-center rounded bg-white hover:bg-gray-50 text-gray-700 text-xs border border-gray-200 transition">&lt;</a>
+                    @endif
+
+                    {{-- Page Numbers --}}
+                    @foreach ($klanten->getUrlRange(1, $klanten->lastPage()) as $page => $url)
+                        @if ($page == $klanten->currentPage())
+                            <span class="w-7 h-7 flex items-center justify-center rounded bg-[#b91c1c] text-white text-xs font-bold border border-[#b91c1c]">{{ $page }}</span>
+                        @else
+                            <a href="{{ $url }}" class="w-7 h-7 flex items-center justify-center rounded bg-white hover:bg-gray-50 text-gray-700 text-xs border border-gray-200 transition">{{ $page }}</a>
+                        @endif
+                    @endforeach
+
+                    {{-- Next Page Link --}}
+                    @if ($klanten->hasMorePages())
+                        <a href="{{ $klanten->nextPageUrl() }}" class="w-7 h-7 flex items-center justify-center rounded bg-white hover:bg-gray-50 text-gray-700 text-xs border border-gray-200 transition">&gt;</a>
+                    @else
+                        <span class="w-7 h-7 flex items-center justify-center rounded bg-gray-50 text-gray-400 text-xs border border-gray-200 cursor-not-allowed">&gt;</span>
+                    @endif
+                </div>
+            @endif
+
+            <div class="hidden md:block w-[200px]"></div>
         </div>
 
         {{-- Customers Table / Grid --}}
@@ -71,7 +101,7 @@
                                 <td class="py-4 px-6 whitespace-nowrap">{{ $klant->Mobiel }}</td>
                                 <td class="py-4 px-6">{{ $klant->ContactEmail }}</td>
                                 <td class="py-4 px-6 text-center whitespace-nowrap">
-                                    <a href="{{ route('admin.klanten.show', $klant->Id) }}" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-1.5 px-4 rounded border border-gray-200 transition duration-150">
+                                    <a href="{{ route('admin.klanten.show', $klant->Id) }}" class="border border-blue-500 hover:bg-blue-50 text-blue-500 font-semibold py-1.5 px-5 rounded-md text-xs transition duration-150 bg-white">
                                         Details
                                     </a>
                                 </td>
@@ -86,13 +116,6 @@
                     </tbody>
                 </table>
             </div>
-
-            {{-- Pagination Links --}}
-            @if ($klanten->hasPages())
-                <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-center">
-                    {{ $klanten->links() }}
-                </div>
-            @endif
         </div>
     </div>
 
