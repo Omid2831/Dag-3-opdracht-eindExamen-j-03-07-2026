@@ -88,4 +88,5 @@ class Product extends Model
 
         return $paginated->withQueryString();
     }
+    
 }
