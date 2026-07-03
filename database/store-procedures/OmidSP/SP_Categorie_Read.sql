@@ -1,0 +1,16 @@
+DROP PROCEDURE IF EXISTS SP_Categorie_Read;
+
+CREATE PROCEDURE SP_Categorie_Read()
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+    SELECT Id, Naam, Omschrijving FROM Categorie WHERE IsActief = b'1' ORDER BY Naam ASC;
+    COMMIT;
+END;
+
+CALL SP_Categorie_Read();

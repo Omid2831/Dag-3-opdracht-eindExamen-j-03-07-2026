@@ -32,6 +32,9 @@ Route::get('/admin/behandelingen', [BehandelingController::class, 'index'])->mid
 
 
 Route::get('/admin/producten', [ProductController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.producten');
+Route::get('/admin/producten/{id}', [ProductController::class, 'show'])->middleware(['auth', 'role:admin'])->name('admin.producten.show');
+Route::get('/admin/producten/{id}/edit', [ProductController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('admin.producten.edit');
+Route::post('/admin/producten/{id}', [ProductController::class, 'update'])->middleware(['auth', 'role:admin'])->name('admin.producten.update');
 
 
 Route::get('/manager/dashboard', function () {
