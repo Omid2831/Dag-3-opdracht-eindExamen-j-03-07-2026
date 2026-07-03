@@ -9,7 +9,7 @@
 
         {{-- Error Alert --}}
         @if (session('error') || $errors->any())
-            <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg shadow-sm">
+            <div class="mb-6 p-4 bg-[#fde8e8] border border-[#f8b4b4] text-[#9b1c1c] rounded-lg shadow-sm">
                 <span class="font-semibold text-sm">Klantgegevens zijn niet bijgewerkt.</span>
             </div>
         @endif
@@ -30,8 +30,17 @@
                     {{-- Naam --}}
                     <div>
                         <label for="Naam" class="block text-sm font-bold text-gray-700 mb-2">Naam <span class="text-red-500">*</span></label>
-                        <input type="text" name="Naam" id="Naam" required value="{{ old('Naam', trim(implode(' ', array_filter([$klant->Voornaam, $klant->Tussenvoegsel, $klant->Achternaam])))) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Naam') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="text" name="Naam" id="Naam" required value="{{ old('Naam', trim(implode(' ', array_filter([$klant->Voornaam, $klant->Tussenvoegsel, $klant->Achternaam])))) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Naam') border-red-500 pr-10 @enderror">
+                            @error('Naam')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Naam') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Relatienummer --}}
@@ -43,8 +52,17 @@
                     {{-- Contact e-mail --}}
                     <div>
                         <label for="Email" class="block text-sm font-bold text-gray-700 mb-2">Contact e-mail <span class="text-red-500">*</span></label>
-                        <input type="email" name="Email" id="Email" required value="{{ old('Email', $klant->ContactEmail) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Email') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="email" name="Email" id="Email" required value="{{ old('Email', $klant->ContactEmail) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Email') border-red-500 pr-10 @enderror">
+                            @error('Email')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Email') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Account e-mail --}}
@@ -59,22 +77,49 @@
                     {{-- Straatnaam --}}
                     <div class="md:col-span-2">
                         <label for="Straatnaam" class="block text-sm font-bold text-gray-700 mb-2">Straatnaam <span class="text-red-500">*</span></label>
-                        <input type="text" name="Straatnaam" id="Straatnaam" required value="{{ old('Straatnaam', $klant->Straatnaam) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Straatnaam') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="text" name="Straatnaam" id="Straatnaam" required value="{{ old('Straatnaam', $klant->Straatnaam) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Straatnaam') border-red-500 pr-10 @enderror">
+                            @error('Straatnaam')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Straatnaam') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Huisnummer --}}
                     <div class="md:col-span-1">
                         <label for="Huisnummer" class="block text-sm font-bold text-gray-700 mb-2">Huisnummer <span class="text-red-500">*</span></label>
-                        <input type="number" name="Huisnummer" id="Huisnummer" required value="{{ old('Huisnummer', $klant->Huisnummer) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Huisnummer') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="number" name="Huisnummer" id="Huisnummer" required value="{{ old('Huisnummer', $klant->Huisnummer) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Huisnummer') border-red-500 pr-10 @enderror">
+                            @error('Huisnummer')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Huisnummer') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Toevoeging --}}
                     <div class="md:col-span-2">
                         <label for="Toevoeging" class="block text-sm font-bold text-gray-700 mb-2">Toevoeging</label>
-                        <input type="text" name="Toevoeging" id="Toevoeging" value="{{ old('Toevoeging', $klant->Toevoeging) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Toevoeging') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="text" name="Toevoeging" id="Toevoeging" value="{{ old('Toevoeging', $klant->Toevoeging) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Toevoeging') border-red-500 pr-10 @enderror">
+                            @error('Toevoeging')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Toevoeging') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
@@ -83,15 +128,33 @@
                     {{-- Postcode --}}
                     <div>
                         <label for="Postcode" class="block text-sm font-bold text-gray-700 mb-2">Postcode <span class="text-red-500">*</span></label>
-                        <input type="text" name="Postcode" id="Postcode" required value="{{ old('Postcode', $klant->Postcode) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Postcode') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="text" name="Postcode" id="Postcode" required value="{{ old('Postcode', $klant->Postcode) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Postcode') border-red-500 pr-10 @enderror">
+                            @error('Postcode')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Postcode') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Plaats --}}
                     <div>
                         <label for="Plaats" class="block text-sm font-bold text-gray-700 mb-2">Plaats <span class="text-red-500">*</span></label>
-                        <input type="text" name="Plaats" id="Plaats" required value="{{ old('Plaats', $klant->Plaats) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Plaats') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="text" name="Plaats" id="Plaats" required value="{{ old('Plaats', $klant->Plaats) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Plaats') border-red-500 pr-10 @enderror">
+                            @error('Plaats')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Plaats') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
@@ -100,8 +163,17 @@
                     {{-- Mobiel --}}
                     <div>
                         <label for="Mobiel" class="block text-sm font-bold text-gray-700 mb-2">Mobiel <span class="text-red-500">*</span></label>
-                        <input type="text" name="Mobiel" id="Mobiel" required value="{{ old('Mobiel', $klant->Mobiel) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Mobiel') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="text" name="Mobiel" id="Mobiel" required value="{{ old('Mobiel', $klant->Mobiel) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Mobiel') border-red-500 pr-10 @enderror">
+                            @error('Mobiel')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Mobiel') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div></div>
                 </div>
@@ -111,8 +183,17 @@
                     {{-- Bijzonderheden --}}
                     <div>
                         <label for="Bijzonderheden" class="block text-sm font-bold text-gray-700 mb-2">Bijzonderheden</label>
-                        <input type="text" name="Bijzonderheden" id="Bijzonderheden" value="{{ old('Bijzonderheden', $klant->Bijzonderheden) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
-                        @error('Bijzonderheden') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
+                        <div class="relative">
+                            <input type="text" name="Bijzonderheden" id="Bijzonderheden" value="{{ old('Bijzonderheden', $klant->Bijzonderheden) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150 @error('Bijzonderheden') border-red-500 pr-10 @enderror">
+                            @error('Bijzonderheden')
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @enderror
+                        </div>
+                        @error('Bijzonderheden') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
 
