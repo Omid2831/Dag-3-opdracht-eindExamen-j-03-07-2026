@@ -22,24 +22,26 @@
         <h1 class="text-3xl font-extrabold text-[#b91c1c] mb-6">Overzicht klanten</h1>
 
         {{-- Search Card --}}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 flex justify-end">
-            <form method="GET" action="{{ route('admin.klanten') }}" class="flex items-end gap-3">
-                <div class="w-56">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 flex flex-col sm:flex-row justify-end">
+            <form method="GET" action="{{ route('admin.klanten') }}" class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 w-full sm:w-auto">
+                <div class="w-full sm:w-56">
                     <label for="postcode" class="block text-xs font-bold text-gray-700 mb-1.5">Postcode zoeken</label>
                     <input type="text" name="postcode" id="postcode" value="{{ request('postcode') }}" placeholder="Bijv. 3512AB" class="w-full h-9 text-xs rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                 </div>
-                <button type="submit" class="bg-[#b91c1c] hover:bg-[#981414] text-white text-xs font-bold h-9 px-4 rounded-lg transition duration-150 shadow-sm">
-                    Toon klanten
-                </button>
-                <a href="{{ route('admin.klanten') }}" class="bg-[#6b7280] hover:bg-[#4b5563] text-white text-xs font-bold h-9 px-4 flex items-center justify-center rounded-lg transition duration-150 shadow-sm">
-                    Reset
-                </a>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button type="submit" class="bg-[#b91c1c] hover:bg-[#981414] text-white text-xs font-bold h-9 px-4 rounded-lg transition duration-150 shadow-sm flex-1 sm:flex-none">
+                        Toon klanten
+                    </button>
+                    <a href="{{ route('admin.klanten') }}" class="bg-[#6b7280] hover:bg-[#4b5563] text-white text-xs font-bold h-9 px-4 flex items-center justify-center rounded-lg transition duration-150 shadow-sm flex-1 sm:flex-none">
+                        Reset
+                    </a>
+                </div>
             </form>
         </div>
 
         {{-- Count Info & Centered Pagination Row --}}
-        <div class="flex items-center justify-between mb-4">
-            <div class="text-xs font-bold text-gray-500 w-[200px]">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4">
+            <div class="text-xs font-bold text-gray-500 w-full sm:w-[200px] text-center sm:text-left">
                 Gevonden klanten - {{ $klanten->total() }} klant(en)
             </div>
             
@@ -71,7 +73,7 @@
                 </div>
             @endif
 
-            <div class="hidden md:block w-[200px]"></div>
+            <div class="hidden sm:block w-[200px]"></div>
         </div>
 
         {{-- Customers Table / Grid --}}
