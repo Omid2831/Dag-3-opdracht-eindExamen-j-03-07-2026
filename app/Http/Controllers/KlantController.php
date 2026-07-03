@@ -134,24 +134,12 @@ class KlantController extends Controller
                 ->with('error', 'Klantgegevens zijn niet bijgewerkt.');
         }
 
-        // Split Name into Voornaam, Tussenvoegsel, and Achternaam
+        // Split Name into Voornaam and Achternaam by first space
         $name = $request->input('Naam');
-        $parts = explode(' ', trim($name));
-        $count = count($parts);
-
-        if ($count >= 3) {
-            $voornaam = $parts[0];
-            $achternaam = array_pop($parts);
-            $tussenvoegsel = implode(' ', array_slice($parts, 1));
-        } elseif ($count === 2) {
-            $voornaam = $parts[0];
-            $tussenvoegsel = null;
-            $achternaam = $parts[1];
-        } else {
-            $voornaam = $parts[0] ?? '';
-            $tussenvoegsel = null;
-            $achternaam = '';
-        }
+        $parts = explode(' ', trim($name), 2);
+        $voornaam = $parts[0];
+        $tussenvoegsel = null;
+        $achternaam = $parts[1] ?? '';
 
         $data = [
             'Voornaam' => $voornaam,
