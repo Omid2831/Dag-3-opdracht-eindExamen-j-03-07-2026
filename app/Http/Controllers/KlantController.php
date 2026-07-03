@@ -108,9 +108,7 @@ class KlantController extends Controller
     public function update(Request $request, int $id): RedirectResponse
     {
         $request->validate([
-            'Voornaam' => 'required|string|max:50',
-            'Tussenvoegsel' => 'nullable|string|max:20',
-            'Achternaam' => 'required|string|max:50',
+            'Naam' => 'required|string|max:100',
             'Bijzonderheden' => 'required|string|max:255',
             'Straatnaam' => 'required|string|max:100',
             'Huisnummer' => 'required|integer',
@@ -136,11 +134,44 @@ class KlantController extends Controller
                 ->with('error', 'Klantgegevens zijn niet bijgewerkt.');
         }
 
-        $success = $this->klantModel->update($id, $request->all());
+        // Split Name into Voornaam, Tussenvoegsel, and Achternaam
+        $name = $request->input('Naam');
+        $parts = explode(' ', trim($name));
+        $count = count($parts);
+
+        if ($count >= 3) {
+            $voornaam = $parts[0];
+            $achternaam = array_pop($parts);
+            $tussenvoegsel = implode(' ', array_slice($parts, 1));
+        } elseif ($count === 2) {
+            $voornaam = $parts[0];
+            $tussenvoegsel = null;
+            $achternaam = $parts[1];
+        } else {
+            $voornaam = $parts[0] ?? '';
+            $tussenvoegsel = null;
+            $achternaam = '';
+        }
+
+        $data = [
+            'Voornaam' => $voornaam,
+            'Tussenvoegsel' => $tussenvoegsel,
+            'Achternaam' => $achternaam,
+            'Bijzonderheden' => $request->input('Bijzonderheden') ?? '',
+            'Straatnaam' => $request->input('Straatnaam'),
+            'Huisnummer' => $request->input('Huisnummer'),
+            'Toevoeging' => $request->input('Toevoeging'),
+            'Postcode' => $request->input('Postcode'),
+            'Plaats' => $request->input('Plaats'),
+            'Email' => $request->input('Email'),
+            'Mobiel' => $request->input('Mobiel')
+        ];
+
+        $success = $this->klantModel->update($id, $data);
 
         if ($success) {
             return redirect()
-                ->route('klant.index')
+                ->route('admin.klanten')
                 ->with('success', 'Klantgegevens bijgewerkt.');
         }
 
