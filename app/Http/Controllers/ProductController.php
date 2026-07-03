@@ -108,31 +108,26 @@ class ProductController extends Controller
             return redirect()->route('admin.producten');
         }
 
-        try {
-            $request->validate([
-                'Nieuwe_houdbaarheidsdatum' => [
-                    'required',
-                    'date',
-                    function ($attribute, $value, $fail) use ($productDetail) {
-                        $currentDate = new \DateTime($productDetail->Houdbaarheidsdatum);
-                        $newDate = new \DateTime($value);
-                        
-                        if ($newDate < $currentDate) {
-                            $fail('De nieuwe houdbaarheidsdatum kan niet in het verleden liggen ten opzichte van de huidige datum.');
-                            return;
-                        }
-                        
-                        $diff = $currentDate->diff($newDate);
-                        if ($diff->days > 7) {
-                            $fail('De houdbaarheidsdatum is met meer dan 7 dagen verlengd.');
-                        }
+        $request->validate([
+            'Nieuwe_houdbaarheidsdatum' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($productDetail) {
+                    $currentDate = new \DateTime($productDetail->Houdbaarheidsdatum);
+                    $newDate = new \DateTime($value);
+                    
+                    if ($newDate < $currentDate) {
+                        $fail('De nieuwe houdbaarheidsdatum kan niet in het verleden liggen ten opzichte van de huidige datum.');
+                        return;
                     }
-                ],
-            ]);
-        } catch (ValidationException $e) {
-            session()->flash('error', 'Gegevens niet bijgewerkt');
-            throw $e;
-        }
+                    
+                    $diff = $currentDate->diff($newDate);
+                    if ($diff->days > 7) {
+                        $fail('De houdbaarheidsdatum is met meer dan 7 dagen verlengd.');
+                    }
+                }
+            ],
+        ]);
 
         $newDate = $request->input('Nieuwe_houdbaarheidsdatum');
         $success = $this->product->updateProductExpiration($id, $newDate);
