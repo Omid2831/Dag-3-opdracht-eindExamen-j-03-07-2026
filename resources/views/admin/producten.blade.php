@@ -16,38 +16,58 @@
 
             <!-- Filter Section -->
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
-                <div class="flex justify-end items-end space-x-3">
+                <form action="{{ route('admin.producten') }}" method="GET" class="flex justify-end items-end space-x-3">
                     <div class="flex flex-col">
-                        <label class="text-xs font-semibold text-gray-500 mb-1.5">Categorie selecteren</label>
-                        <select class="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white w-64">
-                            <option>Alle categorieën</option>
-                            <option>Haarverzorging</option>
-                            <option>Haarstyling</option>
-                            <option>Baardverzorging</option>
+                        <label for="category_select" class="text-xs font-semibold text-gray-500 mb-1.5">Categorie selecteren</label>
+                        <select id="category_select" name="category_id" class="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white w-64">
+                            <option value="">Alle categorieën</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->Id }}" {{ $selectedCategory == $category->Id ? 'selected' : '' }}>
+                                    {{ $category->Naam }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
-                    <button class="bg-[#b91c1c] hover:bg-red-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
+                    <button type="submit" class="bg-[#b91c1c] hover:bg-red-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
                         Maak selectie
                     </button>
-                    <button class="bg-slate-500 hover:bg-slate-600 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
+                    <a href="{{ route('admin.producten') }}" class="bg-slate-500 hover:bg-slate-600 text-white px-5 py-2 rounded-xl text-sm font-bold text-center transition shadow-sm">
                         Reset
-                    </button>
-                </div>
+                    </a>
+                </form>
             </div>
 
             <!-- List Section -->
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <div class="flex justify-between items-center mb-6">
-                    <span class="text-sm text-gray-400 font-semibold">Gevonden producten - 10 product(en)</span>
+                    <span class="text-sm text-gray-400 font-semibold">Gevonden producten - {{ $products->total() }} product(en)</span>
                     
-                    <!-- Pagination -->
-                    <div class="flex items-center space-x-1 text-xs">
-                        <a href="#" class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-400 hover:bg-gray-50">‹</a>
-                        <a href="#" class="px-3 py-1.5 bg-[#b91c1c] text-white rounded font-bold">1</a>
-                        <a href="#" class="px-3 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">2</a>
-                        <a href="#" class="px-3 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">3</a>
-                        <a href="#" class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-400 hover:bg-gray-50">›</a>
-                    </div>
+                    @if($products instanceof \Illuminate\Pagination\LengthAwarePaginator && $products->hasPages())
+                        <div class="flex items-center space-x-1">
+                            {{-- Previous Page Link --}}
+                            @if($products->onFirstPage())
+                                <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-400 bg-gray-50 text-xs font-bold cursor-not-allowed">&lt;</span>
+                            @else
+                                <a href="{{ $products->previousPageUrl() }}" class="px-3 py-1.5 border border-gray-300 rounded-lg text-gray-600 bg-white hover:bg-gray-50 text-xs font-bold transition">&lt;</a>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @foreach($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                                @if($page == $products->currentPage())
+                                    <span class="px-3.5 py-1.5 bg-[#b91c1c] text-white rounded-lg text-xs font-bold">{{ $page }}</span>
+                                @else
+                                    <a href="{{ $url }}" class="px-3.5 py-1.5 border border-gray-300 rounded-lg text-gray-600 bg-white hover:bg-gray-50 text-xs font-bold transition">{{ $page }}</a>
+                                @endif
+                            @endforeach
+
+                            {{-- Next Page Link --}}
+                            @if($products->hasMorePages())
+                                <a href="{{ $products->nextPageUrl() }}" class="px-3 py-1.5 border border-gray-300 rounded-lg text-gray-600 bg-white hover:bg-gray-50 text-xs font-bold transition">&gt;</a>
+                            @else
+                                <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-400 bg-gray-50 text-xs font-bold cursor-not-allowed">&gt;</span>
+                            @endif
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Table -->
@@ -65,62 +85,27 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 text-gray-700">
-                            <!-- Row 1 -->
-                            <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-4 px-4 font-semibold text-gray-900">Baardolie Cedar</td>
-                                <td class="py-4 px-4 text-gray-600">Haarverzorging</td>
-                                <td class="py-4 px-4 text-gray-600">Tiko Beard</td>
-                                <td class="py-4 px-4 text-gray-600">0871234500004</td>
-                                <td class="py-4 px-4 text-gray-600">EUR 12,95</td>
-                                <td class="py-4 px-4 text-gray-600">20</td>
-                                <td class="py-4 px-4 text-center">
-                                    <a href="#" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
-                                        Details
-                                    </a>
-                                </td>
-                            </tr>
-                            <!-- Row 2 -->
-                            <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-4 px-4 font-semibold text-gray-900">Hydrating Shampoo</td>
-                                <td class="py-4 px-4 text-gray-600">Haarverzorging</td>
-                                <td class="py-4 px-4 text-gray-600">Tiko Care</td>
-                                <td class="py-4 px-4 text-gray-600">0871234500001</td>
-                                <td class="py-4 px-4 text-gray-600">EUR 14,95</td>
-                                <td class="py-4 px-4 text-gray-600">40</td>
-                                <td class="py-4 px-4 text-center">
-                                    <a href="#" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
-                                        Details
-                                    </a>
-                                </td>
-                            </tr>
-                            <!-- Row 3 -->
-                            <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-4 px-4 font-semibold text-gray-900">Repair Conditioner</td>
-                                <td class="py-4 px-4 text-gray-600">Haarverzorging</td>
-                                <td class="py-4 px-4 text-gray-600">Tiko Care</td>
-                                <td class="py-4 px-4 text-gray-600">0871234500002</td>
-                                <td class="py-4 px-4 text-gray-600">EUR 16,95</td>
-                                <td class="py-4 px-4 text-gray-600">28</td>
-                                <td class="py-4 px-4 text-center">
-                                    <a href="#" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
-                                        Details
-                                    </a>
-                                </td>
-                            </tr>
-                            <!-- Row 4 -->
-                            <tr class="hover:bg-gray-50/50 transition">
-                                <td class="py-4 px-4 font-semibold text-gray-900">Scalp Balance Masker</td>
-                                <td class="py-4 px-4 text-gray-600">Haarverzorging</td>
-                                <td class="py-4 px-4 text-gray-600">Tiko Care</td>
-                                <td class="py-4 px-4 text-gray-600">0871234500003</td>
-                                <td class="py-4 px-4 text-gray-600">EUR 19,95</td>
-                                <td class="py-4 px-4 text-gray-600">18</td>
-                                <td class="py-4 px-4 text-center">
-                                    <a href="#" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
-                                        Details
-                                    </a>
-                                </td>
-                            </tr>
+                            @forelse($products as $prod)
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="py-4 px-4 font-semibold text-gray-900">{{ $prod->Naam }}</td>
+                                    <td class="py-4 px-4 text-gray-600">{{ $prod->Categorie }}</td>
+                                    <td class="py-4 px-4 text-gray-600">{{ $prod->Merk }}</td>
+                                    <td class="py-4 px-4 text-gray-600">{{ $prod->EANcode }}</td>
+                                    <td class="py-4 px-4 text-gray-600">EUR {{ number_format($prod->VerkoopPrijs, 2, ',', '.') }}</td>
+                                    <td class="py-4 px-4 text-gray-600">{{ $prod->Voorraad }}</td>
+                                    <td class="py-4 px-4 text-center">
+                                        <a href="{{ route('admin.producten.show', $prod->Id) }}" class="border border-blue-500 text-blue-500 hover:bg-blue-50 px-4 py-1 rounded-lg text-xs font-bold transition inline-block">
+                                            Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="py-8 text-center text-red-600 font-semibold bg-red-50/50 rounded-xl">
+                                        Er zijn geen producten bekend binnen de geselecteerde categorie
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
