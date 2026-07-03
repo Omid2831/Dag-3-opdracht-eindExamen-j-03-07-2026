@@ -30,27 +30,27 @@
                     {{-- Naam --}}
                     <div>
                         <label for="Naam" class="block text-sm font-bold text-gray-700 mb-2">Naam <span class="text-red-500">*</span></label>
-                        <input type="text" name="Naam" id="Naam" required value="{{ old('Naam', trim(implode(' ', array_filter([$klant->Voornaam, $klant->Tussenvoegsel, $klant->Achternaam])))) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="text" name="Naam" id="Naam" required value="{{ old('Naam', trim(implode(' ', array_filter([$klant->Voornaam, $klant->Tussenvoegsel, $klant->Achternaam])))) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Naam') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Relatienummer --}}
                     <div>
                         <label for="Relatienummer" class="block text-sm font-bold text-gray-700 mb-2">Relatienummer</label>
-                        <input type="text" name="Relatienummer" id="Relatienummer" readonly value="{{ $klant->Relatienummer }}" class="w-full rounded-lg border-gray-200 shadow-sm bg-gray-100 cursor-not-allowed">
+                        <input type="text" name="Relatienummer" id="Relatienummer" readonly value="{{ $klant->Relatienummer }}" class="w-full rounded-lg border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed">
                     </div>
 
                     {{-- Contact e-mail --}}
                     <div>
                         <label for="Email" class="block text-sm font-bold text-gray-700 mb-2">Contact e-mail <span class="text-red-500">*</span></label>
-                        <input type="email" name="Email" id="Email" required value="{{ old('Email', $klant->ContactEmail) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="email" name="Email" id="Email" required value="{{ old('Email', $klant->ContactEmail) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Email') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Account e-mail --}}
                     <div>
                         <label for="AccountEmail" class="block text-sm font-bold text-gray-700 mb-2">Account e-mail</label>
-                        <input type="email" name="AccountEmail" id="AccountEmail" readonly value="{{ $klant->AccountEmail }}" class="w-full rounded-lg border-gray-200 shadow-sm bg-gray-100 cursor-not-allowed">
+                        <input type="email" name="AccountEmail" id="AccountEmail" readonly value="{{ $klant->AccountEmail }}" class="w-full rounded-lg border-gray-300 shadow-sm bg-gray-100 cursor-not-allowed">
                     </div>
                 </div>
 
@@ -59,21 +59,21 @@
                     {{-- Straatnaam --}}
                     <div class="md:col-span-2">
                         <label for="Straatnaam" class="block text-sm font-bold text-gray-700 mb-2">Straatnaam <span class="text-red-500">*</span></label>
-                        <input type="text" name="Straatnaam" id="Straatnaam" required value="{{ old('Straatnaam', $klant->Straatnaam) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="text" name="Straatnaam" id="Straatnaam" required value="{{ old('Straatnaam', $klant->Straatnaam) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Straatnaam') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Huisnummer --}}
                     <div class="md:col-span-1">
                         <label for="Huisnummer" class="block text-sm font-bold text-gray-700 mb-2">Huisnummer <span class="text-red-500">*</span></label>
-                        <input type="number" name="Huisnummer" id="Huisnummer" required value="{{ old('Huisnummer', $klant->Huisnummer) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="number" name="Huisnummer" id="Huisnummer" required value="{{ old('Huisnummer', $klant->Huisnummer) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Huisnummer') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Toevoeging --}}
                     <div class="md:col-span-2">
                         <label for="Toevoeging" class="block text-sm font-bold text-gray-700 mb-2">Toevoeging</label>
-                        <input type="text" name="Toevoeging" id="Toevoeging" value="{{ old('Toevoeging', $klant->Toevoeging) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="text" name="Toevoeging" id="Toevoeging" value="{{ old('Toevoeging', $klant->Toevoeging) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Toevoeging') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
                 </div>
@@ -83,14 +83,14 @@
                     {{-- Postcode --}}
                     <div>
                         <label for="Postcode" class="block text-sm font-bold text-gray-700 mb-2">Postcode <span class="text-red-500">*</span></label>
-                        <input type="text" name="Postcode" id="Postcode" required value="{{ old('Postcode', $klant->Postcode) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="text" name="Postcode" id="Postcode" required value="{{ old('Postcode', $klant->Postcode) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Postcode') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
 
                     {{-- Plaats --}}
                     <div>
                         <label for="Plaats" class="block text-sm font-bold text-gray-700 mb-2">Plaats <span class="text-red-500">*</span></label>
-                        <input type="text" name="Plaats" id="Plaats" required value="{{ old('Plaats', $klant->Plaats) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="text" name="Plaats" id="Plaats" required value="{{ old('Plaats', $klant->Plaats) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Plaats') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                     {{-- Mobiel --}}
                     <div>
                         <label for="Mobiel" class="block text-sm font-bold text-gray-700 mb-2">Mobiel <span class="text-red-500">*</span></label>
-                        <input type="text" name="Mobiel" id="Mobiel" required value="{{ old('Mobiel', $klant->Mobiel) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="text" name="Mobiel" id="Mobiel" required value="{{ old('Mobiel', $klant->Mobiel) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Mobiel') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
                     <div></div>
@@ -111,7 +111,7 @@
                     {{-- Bijzonderheden --}}
                     <div>
                         <label for="Bijzonderheden" class="block text-sm font-bold text-gray-700 mb-2">Bijzonderheden</label>
-                        <input type="text" name="Bijzonderheden" id="Bijzonderheden" value="{{ old('Bijzonderheden', $klant->Bijzonderheden) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="text" name="Bijzonderheden" id="Bijzonderheden" value="{{ old('Bijzonderheden', $klant->Bijzonderheden) }}" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Bijzonderheden') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
                 </div>
