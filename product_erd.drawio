@@ -1,0 +1,56 @@
+<mxfile host="65bd71144e">
+    <diagram id="ProductERD" name="Product ERD">
+        <mxGraphModel dx="1212" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                
+                <!-- Table Categorie -->
+                <mxCell id="cat" value="&lt;b&gt;Categorie&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)&lt;br/&gt;+ Naam : VARCHAR(100)&lt;br/&gt;+ Omschrijving : VARCHAR(255)&lt;br/&gt;+ IsActief : BIT&lt;br/&gt;+ Opmerking : VARCHAR(255)&lt;br/&gt;+ DatumAangemaakt : DATETIME&lt;br/&gt;+ DatumGewijzigd : DATETIME" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="40" width="220" height="150" as="geometry"/>
+                </mxCell>
+
+                <!-- Table Product -->
+                <mxCell id="prod" value="&lt;b&gt;Product&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)&lt;br/&gt;# CategorieId : INT (FK)&lt;br/&gt;+ Naam : VARCHAR(100)&lt;br/&gt;+ Omschrijving : VARCHAR(255)&lt;br/&gt;+ Merk : VARCHAR(100)&lt;br/&gt;+ EANcode : VARCHAR(13)&lt;br/&gt;+ Houdbaarheidsdatum : DATE&lt;br/&gt;+ InkoopPrijs : DECIMAL(10,2)&lt;br/&gt;+ VerkoopPrijs : DECIMAL(10,2)&lt;br/&gt;+ IsActief : BIT&lt;br/&gt;+ Opmerking : VARCHAR(255)&lt;br/&gt;+ DatumAangemaakt : DATETIME&lt;br/&gt;+ DatumGewijzigd : DATETIME" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="40" width="240" height="240" as="geometry"/>
+                </mxCell>
+
+                <!-- Table Voorraad -->
+                <mxCell id="voor" value="&lt;b&gt;Voorraad&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)&lt;br/&gt;# ProductId : INT (FK)&lt;br/&gt;+ AantalOpVoorraad : INT&lt;br/&gt;+ AantalUitgegeven : INT&lt;br/&gt;+ AantalBijgekomen : INT&lt;br/&gt;+ IsActief : BIT&lt;br/&gt;+ Opmerking : VARCHAR(255)&lt;br/&gt;+ DatumAangemaakt : DATETIME&lt;br/&gt;+ DatumGewijzigd : DATETIME" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="40" width="220" height="180" as="geometry"/>
+                </mxCell>
+
+                <!-- Table Leverancier -->
+                <mxCell id="lev" value="&lt;b&gt;Leverancier&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)&lt;br/&gt;+ Naam : VARCHAR(100)&lt;br/&gt;+ Straatnaam : VARCHAR(100)&lt;br/&gt;+ Huisnummer : INT&lt;br/&gt;+ Toevoeging : VARCHAR(10)&lt;br/&gt;+ Postcode : VARCHAR(10)&lt;br/&gt;+ Plaats : VARCHAR(50)&lt;br/&gt;+ Email : VARCHAR(100)&lt;br/&gt;+ Mobiel : VARCHAR(20)&lt;br/&gt;+ IsActief : BIT&lt;br/&gt;+ Opmerking : VARCHAR(255)&lt;br/&gt;+ DatumAangemaakt : DATETIME&lt;br/&gt;+ DatumGewijzigd : DATETIME" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="380" width="220" height="230" as="geometry"/>
+                </mxCell>
+
+                <!-- Table LeverancierOrder -->
+                <mxCell id="order" value="&lt;b&gt;LeverancierOrder&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)&lt;br/&gt;+ Ordernummer : VARCHAR(20)&lt;br/&gt;# ProductId : INT (FK)&lt;br/&gt;# LeverancierId : INT (FK)&lt;br/&gt;+ Aantal : INT&lt;br/&gt;+ Orderdatum : DATE&lt;br/&gt;+ Leverdatum : DATE&lt;br/&gt;+ Leverstatus : VARCHAR(50)&lt;br/&gt;+ IsActief : BIT&lt;br/&gt;+ Opmerking : VARCHAR(255)&lt;br/&gt;+ DatumAangemaakt : DATETIME&lt;br/&gt;+ DatumGewijzigd : DATETIME" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#e1d5e7;strokeColor=#b85450;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="380" width="240" height="230" as="geometry"/>
+                </mxCell>
+
+                <!-- Connection: Categorie to Product -->
+                <mxCell id="conn1" value="1           *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#4c6ef5;strokeWidth=2;endArrow=classic;endFill=1;" edge="1" parent="1" source="cat" target="prod">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- Connection: Product to Voorraad -->
+                <mxCell id="conn2" value="1           1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#4c6ef5;strokeWidth=2;endArrow=classic;endFill=1;" edge="1" parent="1" source="prod" target="voor">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- Connection: Product to LeverancierOrder -->
+                <mxCell id="conn3" value="1           *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#4c6ef5;strokeWidth=2;endArrow=classic;endFill=1;" edge="1" parent="1" source="prod" target="order">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- Connection: Leverancier to LeverancierOrder -->
+                <mxCell id="conn4" value="1           *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#4c6ef5;strokeWidth=2;endArrow=classic;endFill=1;" edge="1" parent="1" source="lev" target="order">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
