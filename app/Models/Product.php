@@ -31,12 +31,13 @@ class Product extends Model
      * Fetch a single product by its ID.
      *
      * @param int $id
+     * @param int|null $categoryId
      * @return object
      */
-    public function getProductById(int $id): object
+    public function getProductById(int $id, ?int $categoryId = 0): object
     {
         try {
-            $results = DB::select('CALL SP_Product_Read(?, ?)', [$id, null]);
+            $results = DB::select('CALL SP_Product_Read(?, ?)', [$id, $categoryId]);
             Log::info("Successfully fetched product ID {$id} via SP_Product_Read");
             return $results[0] ?? (object)[];
         } catch (\Exception $e) {
@@ -55,9 +56,9 @@ class Product extends Model
     public function updateProductExpiration(int $id, string $houdbaarheidsdatum): bool
     {
         try {
-            DB::statement('CALL SP_Product_Update(?, ?)', [$id, $houdbaarheidsdatum]);
+            $results = DB::statement('CALL SP_Product_Update(?, ?)', [$id, $houdbaarheidsdatum]) ?? false;
             Log::info("Successfully updated product ID {$id} via SP_Product_Update");
-            return true;
+            return $results;
         } catch (\Exception $e) {
             Log::error("Failed to update product ID {$id}: " . $e->getMessage());
             return false;
