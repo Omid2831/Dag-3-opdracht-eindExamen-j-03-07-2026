@@ -119,11 +119,11 @@
                 <p class="text-xs text-gray-500 mb-6">Velden met een <span class="text-red-500">*</span> zijn verplicht.</p>
 
                 {{-- Action Buttons --}}
-                <div class="flex justify-end gap-3 border-t border-gray-100 pt-6">
-                    <button type="submit" class="bg-[#b91c1c] hover:bg-[#981414] text-white font-bold py-2.5 px-6 rounded-lg shadow-sm transition duration-150 cursor-pointer">
+                <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-gray-100 pt-6">
+                    <button type="submit" class="bg-[#b91c1c] hover:bg-[#981414] text-white font-bold py-2.5 px-6 rounded-lg shadow-sm transition duration-150 cursor-pointer w-full sm:w-auto text-center">
                         Opslaan
                     </button>
-                    <a href="{{ route('admin.klanten.show', $klant->Id) }}" class="border border-blue-500 hover:bg-blue-50 text-blue-500 font-bold py-2.5 px-6 rounded-lg bg-white transition duration-150 shadow-sm flex items-center justify-center">
+                    <a href="{{ route('admin.klanten.show', $klant->Id) }}" class="border border-blue-500 hover:bg-blue-50 text-blue-500 font-bold py-2.5 px-6 rounded-lg bg-white transition duration-150 shadow-sm flex items-center justify-center w-full sm:w-auto text-center">
                         Terug
                     </a>
                 </div>
