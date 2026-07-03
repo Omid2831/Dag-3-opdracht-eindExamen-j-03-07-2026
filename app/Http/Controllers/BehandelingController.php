@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Behandeling;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -83,21 +82,22 @@ class BehandelingController extends Controller
     }
 
     public function update(Request $request)
-{
-    $request->validate(['product_id' => 'required', 'verkoopprijs' => 'required|numeric']);
+    {
+        $request->validate(['product_id' => 'required', 'verkoopprijs' => 'required|numeric']);
 
-    $result = Product::updatePrice($request->product_id, $request->verkoopprijs);
+        $result = $this->behandelingModel::updatePrice($request->product_id, $request->verkoopprijs);
 
-    // Controleer of result een object is (dus geen false/bool)
-    if (is_object($result) && isset($result->success) && $result->success == 1) {
-        return redirect()->back()->with('success', $result->message);
+        // Controleer of result een object is (dus geen false/bool)
+        if (is_object($result) && isset($result->success) && $result->success == 1) {
+            return redirect()->route('admin.behandelingen.show', ['id' => $request->product_id])
+                 ->with('success', $result->message);
+        }
+
+        // Fallback voor als het resultaat leeg is of success 0 is
+        $errorMessage = (is_object($result)) ? $result->message : 'Er is een fout opgetreden in de database.';
+
+        return redirect()->back()
+            ->withErrors(['verkoopprijs' => $errorMessage])
+            ->withInput();
     }
-
-    // Fallback voor als het resultaat leeg is of success 0 is
-    $errorMessage = (is_object($result)) ? $result->message : 'Er is een fout opgetreden in de database.';
-    
-    return redirect()->back()
-                     ->withErrors(['verkoopprijs' => $errorMessage])
-                     ->withInput();
-}
 }
