@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Models;
-use DB;
-use Log;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 class Behandeling extends Model
 {
@@ -33,19 +33,39 @@ class Behandeling extends Model
         'Prijs' => 'decimal:2',
     ];
 
-    public function behandelingPerVoorraad()
-    {
-        return $this->hasMany(BehandelingPerVoorraad::class, 'BehandelingId', 'Id');
-    }
-
     public function getAllBehandelingen()
     {
         try {
             $behandelingen = DB::select('CALL GetBehandelingenOverzicht()' ?? []);
+
             return $behandelingen;
         } catch (\Exception $e) {
             // Log the error or handle it as needed
-            Log::error('Error occurred while fetching behandelingen: ' . $e->getMessage());
+            Log::error('Error occurred while fetching behandelingen: '.$e->getMessage());
         }
+    }
+
+    public static function getProductenByBehandeling($id)
+    {
+        try {
+            return DB::select('CALL GetProductenByBehandeling(?)', [$id]) ?? [];
+        } catch (\Exception $e) {
+            Log::error('Error in GetProductenByBehandeling: '.$e->getMessage());
+        }
+    }
+
+    public static function GetProductDetail($id)
+    {
+        try {
+            return DB::select('CALL GetProductDetail(?)', [$id]) ?? [];
+        } catch (\Exception $e) {
+            Log::error('Error in GetProductDetail: '.$e->getMessage());
+        }
+    }
+
+    public static function updatePrice($id, $newPrice)
+    {
+        // DB::selectOne geeft het object met 'success' en 'message' uit de procedure terug
+        return DB::selectOne('CALL UpdateProductPrijs(?, ?)', [$id, $newPrice]);
     }
 }
