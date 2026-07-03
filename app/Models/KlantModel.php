@@ -6,10 +6,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
+// Dit model regelt alle database interactie voor Klanten via de Stored Procedures
 class KlantModel
 {
     /**
-     * Get all active customers, optionally filtered by postcode.
+     * Haal alle actieve klanten op, eventueel gefilterd op postcode
      *
      * @param string|null $postcode
      * @return array
@@ -17,17 +18,19 @@ class KlantModel
     public function read(?string $postcode = null): array
     {
         try {
+            // We roepen hier de read stored procedure aan met de optionele postcode filter
             $results = DB::select('CALL SP_Klant_Read(?)', [$postcode]);
             Log::info('Successfully fetched customers via SP_Klant_Read');
             return $results ?? [];
         } catch (Throwable $e) {
+            // Foutmelding wegschrijven naar logbestand voor debugging tijdens examen
             Log::error('Failed to fetch customers via SP_Klant_Read: ' . $e->getMessage());
             return [];
         }
     }
 
     /**
-     * Get details for a single active customer by ID.
+     * Haal de details op van één specifieke actieve klant op basis van Id
      *
      * @param int $id
      * @return object
@@ -35,6 +38,7 @@ class KlantModel
     public function readById(int $id): object
     {
         try {
+            // Roep de readById stored procedure aan om de details van de klant op te halen
             $results = DB::select('CALL SP_Klant_ReadById(?)', [$id]);
             Log::info("Successfully fetched customer details for ID {$id} via SP_Klant_ReadById");
             return $results[0] ?? (object)[];
@@ -45,7 +49,7 @@ class KlantModel
     }
 
     /**
-     * Update customer basic and contact details in a transaction.
+     * Werk de basis- en contactgegevens van de klant bij in een transactie
      *
      * @param int $id
      * @param array $data
@@ -54,6 +58,7 @@ class KlantModel
     public function update(int $id, array $data): bool
     {
         try {
+            // Update stored procedure aanroepen met alle verplichte en optionele parameters
             $success = DB::statement('CALL SP_Klant_Update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
                 $id,
                 $data['Voornaam'],
