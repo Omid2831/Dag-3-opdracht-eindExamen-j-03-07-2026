@@ -80,7 +80,7 @@ class ProductController extends Controller
     public function edit(int $id): View|RedirectResponse
     {
         $productDetail = $this->product->getProductById($id);
-
+    
         if (!isset($productDetail->Id)) {
             session()->flash('error', 'Product niet gevonden.');
             return redirect()->route('admin.producten');
