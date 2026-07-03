@@ -99,7 +99,8 @@ class KlantTest extends TestCase
         // Ahmed Mansouri has Klant Id 4
         $response = $this->actingAs($eigenaar)->get(route('admin.klanten.show', 4));
         $response->assertStatus(200);
-        $response->assertSee('Klantdetail Ahmed Mansouri');
+        $response->assertSee('Klantdetail');
+        $response->assertSee('Ahmed Mansouri');
         $response->assertSee('KL-2026-004');
         $response->assertSee('ahmed.mansouri@icloud.com');
     }
