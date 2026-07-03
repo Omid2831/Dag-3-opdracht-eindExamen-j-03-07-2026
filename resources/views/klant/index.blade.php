@@ -8,12 +8,12 @@
 
         {{-- Session Flash Alerts --}}
         @if (session('success'))
-            <div id="session-alert" class="mb-4 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg shadow-sm flex items-center justify-between transition-all duration-300">
+            <div id="session-alert" class="mb-4 p-4 bg-[#e2f0d9] border border-[#c5e0b4] text-[#385723] rounded-lg shadow-sm flex items-center justify-between transition-all duration-300">
                 <span class="font-semibold text-sm">{{ session('success') }}</span>
             </div>
         @endif
         @if (session('error'))
-            <div id="session-alert" class="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg shadow-sm flex items-center justify-between transition-all duration-300">
+            <div id="session-alert" class="mb-4 p-4 bg-[#fde8e8] border border-[#f8b4b4] text-[#9b1c1c] rounded-lg shadow-sm flex items-center justify-between transition-all duration-300">
                 <span class="font-semibold text-sm">{{ session('error') }}</span>
             </div>
         @endif
