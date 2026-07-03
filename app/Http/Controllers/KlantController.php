@@ -23,7 +23,7 @@ class KlantController extends Controller
      */
     public function __construct(KlantModel $klantModel)
     {
-        // Model injectie via constructor
+        // Inject model dependency via constructor
         $this->klantModel = $klantModel;
     }
 
@@ -35,11 +35,11 @@ class KlantController extends Controller
      */
     public function index(Request $request): View
     {
-        // Zoekterm voor postcode ophalen uit het GET-request
+        // Get postcode search parameter from GET request
         $postcode = $request->input('postcode');
         $klanten = $this->klantModel->read($postcode);
 
-        // Omdat we stored procedures gebruiken doen we handmatige paginering (4 per pagina)
+        // Handle collection pagination manually since we call raw stored procedures (4 items per page)
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 4;
         $col = collect($klanten);
@@ -70,7 +70,7 @@ class KlantController extends Controller
      */
     public function show(int $id)
     {
-        // Haal klant details op via de readById methode in het model
+        // Retrieve customer details using readById method from model
         $klant = $this->klantModel->readById($id);
 
         if (empty((array)$klant)) {
@@ -90,7 +90,7 @@ class KlantController extends Controller
      */
     public function edit(int $id)
     {
-        // Details ophalen om het wijzigingsformulier vooraf in te vullen
+        // Retrieve existing customer details to prefill form fields
         $klant = $this->klantModel->readById($id);
 
         if (empty((array)$klant)) {
@@ -111,7 +111,7 @@ class KlantController extends Controller
      */
     public function update(Request $request, int $id): RedirectResponse
     {
-        // Valideer alle invoervelden van het formulier
+        // Run validations on all submitted form fields
         $request->validate([
             'Naam' => 'required|string|max:100',
             'Bijzonderheden' => 'required|string|max:255',
@@ -124,7 +124,7 @@ class KlantController extends Controller
             'Mobiel' => 'required|string|max:20',
         ]);
 
-        // Handmatige uniekheidscontrole op e-mailadres voor andere actieve klanten
+        // Manually check if the email is already taken by another active contact
         $existing = DB::select('
             SELECT 1 FROM Contact c
             JOIN KlantPerContact kpc ON c.Id = kpc.ContactId
@@ -139,7 +139,7 @@ class KlantController extends Controller
                 ->with('error', 'Klantgegevens zijn niet bijgewerkt.');
         }
 
-        // De ingevoerde naam splitsen we op de eerste spatie in Voornaam en Achternaam
+        // Split submitted full name by first space to extract Voornaam and Achternaam
         $name = $request->input('Naam');
         $parts = explode(' ', trim($name), 2);
         $voornaam = $parts[0];
@@ -160,7 +160,7 @@ class KlantController extends Controller
             'Mobiel' => $request->input('Mobiel')
         ];
 
-        // Voer de update uit via de model methode
+        // Execute update on customer details using model
         $success = $this->klantModel->update($id, $data);
 
         if ($success) {
