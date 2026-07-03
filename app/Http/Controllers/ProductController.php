@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 
 class ProductController extends Controller
 {
@@ -113,8 +114,8 @@ class ProductController extends Controller
                 'required',
                 'date',
                 function ($attribute, $value, $fail) use ($productDetail) {
-                    $current = \Illuminate\Support\Carbon::parse($productDetail->Houdbaarheidsdatum);
-                    $new = \Illuminate\Support\Carbon::parse($value);
+                    $current = Carbon::parse($productDetail->Houdbaarheidsdatum);
+                    $new = Carbon::parse($value);
                     
                     // The new expiration date cannot be before the current expiration date
                     if ($new->lessThan($current)) {
