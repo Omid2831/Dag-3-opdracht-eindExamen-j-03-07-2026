@@ -16,7 +16,7 @@
 
         {{-- Heading --}}
         <h1 class="text-3xl font-extrabold text-[#b91c1c] mb-6">
-            Klant wijzigen {{ trim($klant->Voornaam . ' ' . $klant->Tussenvoegsel . ' ' . $klant->Achternaam) }}
+            Klant wijzigen {{ trim(implode(' ', array_filter([$klant->Voornaam, $klant->Tussenvoegsel, $klant->Achternaam]))) }}
         </h1>
 
         {{-- Form --}}
@@ -29,7 +29,7 @@
                     {{-- Naam --}}
                     <div>
                         <label for="Naam" class="block text-sm font-bold text-gray-700 mb-2">Naam *</label>
-                        <input type="text" name="Naam" id="Naam" required value="{{ old('Naam', trim($klant->Voornaam . ' ' . $klant->Tussenvoegsel . ' ' . $klant->Achternaam)) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                        <input type="text" name="Naam" id="Naam" required value="{{ old('Naam', trim(implode(' ', array_filter([$klant->Voornaam, $klant->Tussenvoegsel, $klant->Achternaam])))) }}" class="w-full rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                         @error('Naam') <p class="text-xs text-red-600 mt-1 text-red-600">{{ $message }}</p> @enderror
                     </div>
 
