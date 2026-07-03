@@ -26,6 +26,10 @@ Route::get('/admin/klanten/{id}/edit', [KlantController::class, 'edit'])->middle
 Route::put('/admin/klanten/{id}', [KlantController::class, 'update'])->middleware(['auth', 'role:admin'])->name('admin.klanten.update');
 
 Route::get('/admin/behandelingen', [BehandelingController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.behandelingen');
+Route::get('/admin/behandelingen/{id}/producten', [BehandelingController::class, 'getProductenByBehandeling'])->middleware(['auth', 'role:admin'])->name('admin.behandelingen.producten');
+Route::get('/admin/behandelingen/{id}', [BehandelingController::class, 'show'])->middleware(['auth', 'role:admin'])->name('admin.behandelingen.show');
+Route::get('/admin/behandelingen/{id}/edit', [BehandelingController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('admin.behandelingen.edit');
+Route::put('/admin/behandelingen/{id}', [BehandelingController::class, 'update'])->middleware(['auth', 'role:admin'])->name('admin.behandelingen.update');
 
 Route::get('/admin/producten', [ProductController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.producten');
 Route::get('/admin/producten/{id}', [ProductController::class, 'show'])->middleware(['auth', 'role:admin'])->name('admin.producten.show');
