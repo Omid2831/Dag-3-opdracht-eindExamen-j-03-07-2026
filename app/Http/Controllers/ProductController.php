@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 
 class ProductController extends Controller
 {
@@ -80,7 +81,7 @@ class ProductController extends Controller
     public function edit(int $id): View|RedirectResponse
     {
         $productDetail = $this->product->getProductById($id);
-
+    
         if (!isset($productDetail->Id)) {
             session()->flash('error', 'Product niet gevonden.');
             return redirect()->route('admin.producten');
@@ -113,16 +114,17 @@ class ProductController extends Controller
                 'required',
                 'date',
                 function ($attribute, $value, $fail) use ($productDetail) {
-                    $currentDate = new \DateTime($productDetail->Houdbaarheidsdatum);
-                    $newDate = new \DateTime($value);
+                    $current = Carbon::parse($productDetail->Houdbaarheidsdatum);
+                    $new = Carbon::parse($value);
                     
-                    if ($newDate < $currentDate) {
+                    // The new expiration date cannot be before the current expiration date
+                    if ($new->lessThan($current)) {
                         $fail('De nieuwe houdbaarheidsdatum kan niet in het verleden liggen ten opzichte van de huidige datum.');
                         return;
                     }
                     
-                    $diff = $currentDate->diff($newDate);
-                    if ($diff->days > 7) {
+                    // The new expiration date cannot be extended by more than 7 days
+                    if ($new->diffInDays($current) > 7) {
                         $fail('De houdbaarheidsdatum is met meer dan 7 dagen verlengd.');
                     }
                 }
