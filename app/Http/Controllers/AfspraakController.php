@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Afspraak;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class AfspraakController extends Controller
 {
+    public function __construct(protected Afspraak $afspraakModel) {}
+
     public function index(Request $request): View
     {
-        $afsprakenList = DB::select('CALL GetAllAfspraken()');
+        $afsprakenList = $this->afspraakModel->getAll();
 
         $selectedStatus = $request->query('status');
 
@@ -42,7 +44,7 @@ class AfspraakController extends Controller
 
     public function show(int $id): View
     {
-        [$afspraak, $medewerkers, $behandelingen] = $this->getAfspraakData($id);
+        [$afspraak, $medewerkers, $behandelingen] = $this->afspraakModel->getDetailsById($id);
 
         if (! $afspraak) {
             abort(404);
@@ -53,7 +55,7 @@ class AfspraakController extends Controller
 
     public function edit(int $id): View
     {
-        [$afspraak, $medewerkers, $behandelingen] = $this->getAfspraakData($id);
+        [$afspraak, $medewerkers, $behandelingen] = $this->afspraakModel->getDetailsById($id);
 
         if (! $afspraak) {
             abort(404);
@@ -78,23 +80,13 @@ class AfspraakController extends Controller
         $starttijd = $request->input('starttijd');
 
         // Fetch duration of the selected treatment to calculate end time
-        $treatment = DB::select('SELECT Duurminuten FROM Behandeling WHERE Id = ? LIMIT 1', [$behandelingId]);
-        $duration = ! empty($treatment) ? $treatment[0]->Duurminuten : 30;
+        $duration = $this->afspraakModel->getTreatmentDuration($behandelingId);
 
         $newStart = strtotime("$datum $starttijd");
         $newEnd = $newStart + ($duration * 60);
 
         // Fetch other active appointments for this medewerker on this date
-        $existingAppointments = DB::select("
-            SELECT A.Id, A.Starttijd, B.Duurminuten
-            FROM Afspraak A
-            INNER JOIN MedewerkerPerBehandeling MPB ON A.MedewerkerPerBehandelingId = MPB.Id
-            INNER JOIN Behandeling B ON MPB.BehandelingId = B.Id
-            WHERE MPB.MedewerkerId = ? 
-              AND A.Datum = ? 
-              AND A.Id != ? 
-              AND A.IsActief = b'1'
-        ", [$medewerkerId, $datum, $id]);
+        $existingAppointments = $this->afspraakModel->getExistingAppointmentsForCollision($medewerkerId, $datum, $id);
 
         $hasCollision = false;
         foreach ($existingAppointments as $existing) {
@@ -114,36 +106,16 @@ class AfspraakController extends Controller
             ]);
         }
 
-        DB::update('CALL UpdateAfspraak(?, ?, ?, ?, ?, ?)', [
+        $this->afspraakModel->updateViaProcedure(
             $id,
-            $request->input('medewerker_id'),
-            $request->input('behandeling_id'),
-            $request->input('datum'),
-            $request->input('starttijd'),
-            $request->input('status'),
-        ]);
+            $medewerkerId,
+            $behandelingId,
+            $datum,
+            $starttijd,
+            $request->input('status')
+        );
 
         return redirect()->route('admin.afspraken.show', $id)
             ->with('success', 'Afspraak bijgewerkt');
-    }
-
-    private function getAfspraakData(int $id): array
-    {
-        $pdo = DB::connection()->getPdo();
-        $stmt = $pdo->prepare('CALL GetAfspraakById(?)');
-        $stmt->execute([$id]);
-
-        $results = $stmt->fetchAll(\PDO::FETCH_OBJ);
-        $afspraak = ! empty($results) ? $results[0] : null;
-
-        $stmt->nextRowset();
-        $medewerkers = $stmt->fetchAll(\PDO::FETCH_OBJ);
-
-        $stmt->nextRowset();
-        $behandelingen = $stmt->fetchAll(\PDO::FETCH_OBJ);
-
-        $stmt->closeCursor();
-
-        return [$afspraak, $medewerkers, $behandelingen];
     }
 }
