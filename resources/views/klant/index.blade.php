@@ -26,7 +26,7 @@
             <form method="GET" action="{{ route('admin.klanten') }}" class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 w-full sm:w-auto">
                 <div class="w-full sm:w-56">
                     <label for="postcode" class="block text-xs font-bold text-gray-700 mb-1.5">Postcode zoeken</label>
-                    <input type="text" name="postcode" id="postcode" value="{{ request('postcode') }}" placeholder="Bijv. 3512AB" class="w-full h-9 text-xs rounded-lg border-gray-200 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
+                    <input type="text" name="postcode" id="postcode" value="{{ request('postcode') }}" placeholder="Bijv. 3512AB" class="w-full h-9 text-xs rounded-lg border-gray-300 shadow-sm focus:border-[#b91c1c] focus:ring focus:ring-[#b91c1c] focus:ring-opacity-20 transition duration-150">
                 </div>
                 <div class="flex gap-2 w-full sm:w-auto">
                     <button type="submit" class="bg-[#b91c1c] hover:bg-[#981414] text-white text-xs font-bold h-9 px-4 rounded-lg transition duration-150 shadow-sm flex-1 sm:flex-none">
