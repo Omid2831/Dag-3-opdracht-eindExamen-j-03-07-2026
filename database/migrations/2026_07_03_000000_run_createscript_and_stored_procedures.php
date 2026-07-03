@@ -50,8 +50,8 @@ return new class extends Migration
             $sql = file_get_contents($createscriptPath);
             
             // Remove database selection/altering statements so it runs on current DB connection
-            $sql = preg_replace('/^USE\s+\w+;/i', '', $sql);
-            $sql = preg_replace('/^ALTER DATABASE\s+.*$/im', '', $sql);
+            $sql = preg_replace('/USE\s+`?\w+`?;/i', '', $sql);
+            $sql = preg_replace('/ALTER DATABASE\s+.*?;/i', '', $sql);
             
             DB::unprepared($sql);
         }
