@@ -22,6 +22,9 @@ Route::get('/admin/afspraken', [AfspraakController::class, 'index'])->middleware
 
 
 Route::get('/admin/klanten', [KlantController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.klanten');
+Route::get('/admin/klanten/{id}', [KlantController::class, 'show'])->middleware(['auth', 'role:admin'])->name('admin.klanten.show');
+Route::get('/admin/klanten/{id}/edit', [KlantController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('admin.klanten.edit');
+Route::put('/admin/klanten/{id}', [KlantController::class, 'update'])->middleware(['auth', 'role:admin'])->name('admin.klanten.update');
 
 
 
