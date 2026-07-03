@@ -1,55 +1,117 @@
 <mxfile host="65bd71144e">
     <diagram id="ProductERD" name="Product ERD">
-        <mxGraphModel dx="1212" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="925" dy="1309" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                
-                <!-- Table Categorie -->
-                <mxCell id="cat" value="&lt;b&gt;Categorie&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="1" vertex="1">
-                    <mxGeometry x="40" y="40" width="220" height="70" as="geometry"/>
+                <mxCell id="cat" value="Categorie" style="swimlane;childLayout=listLayout;collapsible=0;connectable=0;horizontal=1;startSize=26;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="60" width="220" height="60" as="geometry"/>
                 </mxCell>
-
-                <!-- Table Product -->
-                <mxCell id="prod" value="&lt;b&gt;Product&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)&lt;br/&gt;# CategorieId : INT (FK)" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="340" y="40" width="240" height="90" as="geometry"/>
+                <mxCell id="cat_r1" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="cat">
+                    <mxGeometry y="26" width="220" height="34" as="geometry"/>
                 </mxCell>
-
-                <!-- Table Voorraad -->
-                <mxCell id="voor" value="&lt;b&gt;Voorraad&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)&lt;br/&gt;# ProductId : INT (FK)" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="680" y="40" width="220" height="90" as="geometry"/>
+                <mxCell id="cat_r1_k" value="PK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="cat_r1">
+                    <mxGeometry width="50" height="34" as="geometry"/>
                 </mxCell>
-
-                <!-- Table Leverancier -->
-                <mxCell id="lev" value="&lt;b&gt;Leverancier&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="40" y="380" width="220" height="70" as="geometry"/>
+                <mxCell id="cat_r1_v" value="Id" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="cat_r1">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
                 </mxCell>
-
-                <!-- Table LeverancierOrder -->
-                <mxCell id="order" value="&lt;b&gt;LeverancierOrder&lt;/b&gt;&lt;hr/&gt;+ Id : INT (PK)&lt;br/&gt;# ProductId : INT (FK)&lt;br/&gt;# LeverancierId : INT (FK)" style="swimlane;fontStyle=0;childLayout=listLayout;horizontal=1;startSize=26;horizontalStack=0;html=1;fillColor=#e1d5e7;strokeColor=#b85450;fontColor=#000000;" parent="1" vertex="1">
-                    <mxGeometry x="340" y="380" width="240" height="110" as="geometry"/>
+                <mxCell id="prod" value="Product" style="swimlane;childLayout=listLayout;collapsible=0;connectable=0;horizontal=1;startSize=26;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="60" width="220" height="94" as="geometry"/>
                 </mxCell>
-
-                <!-- Connection: Categorie to Product -->
-                <mxCell id="conn1" value="1           *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#4c6ef5;strokeWidth=2;endArrow=classic;endFill=1;" parent="1" source="cat" target="prod" edge="1">
+                <mxCell id="prod_r1" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="prod">
+                    <mxGeometry y="26" width="220" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="prod_r1_k" value="PK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="prod_r1">
+                    <mxGeometry width="50" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="prod_r1_v" value="Id" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="prod_r1">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="prod_r2" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="prod">
+                    <mxGeometry y="60" width="220" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="prod_r2_k" value="FK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="prod_r2">
+                    <mxGeometry width="50" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="prod_r2_v" value="CategorieId" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="prod_r2">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="voor" value="Voorraad" style="swimlane;childLayout=listLayout;collapsible=0;connectable=0;horizontal=1;startSize=26;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="740" y="60" width="220" height="94" as="geometry"/>
+                </mxCell>
+                <mxCell id="voor_r1" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="voor">
+                    <mxGeometry x="10" y="30" width="220" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="voor_r1_k" value="PK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="voor_r1">
+                    <mxGeometry width="50" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="voor_r1_v" value="Id" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="voor_r1">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="voor_r2" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="voor">
+                    <mxGeometry y="60" width="220" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="voor_r2_k" value="FK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="voor_r2">
+                    <mxGeometry width="50" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="voor_r2_v" value="ProductId" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="voor_r2">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="lev" value="Leverancier" style="swimlane;childLayout=listLayout;collapsible=0;connectable=0;horizontal=1;startSize=26;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="340" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="lev_r1" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="lev">
+                    <mxGeometry y="26" width="220" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="lev_r1_k" value="PK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="lev_r1">
+                    <mxGeometry width="50" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="lev_r1_v" value="Id" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="lev_r1">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order" value="LeverancierOrder" style="swimlane;childLayout=listLayout;collapsible=0;connectable=0;horizontal=1;startSize=26;fillColor=#ffffff;strokeColor=#000000;fontStyle=1;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="340" width="220" height="128" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r1" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="order">
+                    <mxGeometry y="26" width="220" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r1_k" value="PK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="order_r1">
+                    <mxGeometry width="50" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r1_v" value="Id" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="order_r1">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r2" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="order">
+                    <mxGeometry y="60" width="220" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r2_k" value="FK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="order_r2">
+                    <mxGeometry width="50" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r2_v" value="ProductId" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="order_r2">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r3" value="" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[];portConstraint=eastwest;html=1;" vertex="1" parent="order">
+                    <mxGeometry y="94" width="220" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r3_k" value="FK" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;overflow=hidden;connectable=0;html=1;" vertex="1" parent="order_r3">
+                    <mxGeometry width="50" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="order_r3_v" value="LeverancierId" style="shape=partialRectangle;top=0;left=0;bottom=0;right=0;fillColor=none;align=left;verticalAlign=middle;overflow=hidden;connectable=0;html=1;" vertex="1" parent="order_r3">
+                    <mxGeometry x="50" width="170" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="rel1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#000000;strokeWidth=1;startArrow=ERmandOne;endArrow=ERmany;" edge="1" parent="1" source="cat" target="prod">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-
-                <!-- Connection: Product to Voorraad -->
-                <mxCell id="conn2" value="1           1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#4c6ef5;strokeWidth=2;endArrow=classic;endFill=1;" parent="1" source="prod" target="voor" edge="1">
+                <mxCell id="rel2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#000000;strokeWidth=1;startArrow=ERmandOne;endArrow=ERmandOne;" edge="1" parent="1" source="prod" target="voor">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-
-                <!-- Connection: Product to LeverancierOrder -->
-                <mxCell id="conn3" value="1           *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#4c6ef5;strokeWidth=2;endArrow=classic;endFill=1;" parent="1" source="prod" target="order" edge="1">
+                <mxCell id="rel3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#000000;strokeWidth=1;startArrow=ERmandOne;endArrow=ERmany;" edge="1" parent="1" source="prod" target="order">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-
-                <!-- Connection: Leverancier to LeverancierOrder -->
-                <mxCell id="conn4" value="1           *" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#4c6ef5;strokeWidth=2;endArrow=classic;endFill=1;" parent="1" source="lev" target="order" edge="1">
+                <mxCell id="rel4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#000000;strokeWidth=1;startArrow=ERmandOne;endArrow=ERmany;" edge="1" parent="1" source="lev" target="order">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-
             </root>
         </mxGraphModel>
     </diagram>
