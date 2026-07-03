@@ -17,6 +17,15 @@
                 <span class="text-gray-500 ml-1.5 font-normal">{{ $afspraak->KlantNaam }}</span>
             </h1>
 
+            @if($errors->any())
+                <div class="bg-red-50 border border-red-200 text-red-800 px-5 py-3 rounded-2xl text-sm font-semibold mb-6 flex items-center space-x-2.5 max-w-4xl shadow-sm">
+                    <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Afspraakgegevens zijn niet bijgewerkt</span>
+                </div>
+            @endif
+
             <!-- Form Card -->
             <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 max-w-4xl">
                 <form method="POST" action="{{ route('admin.afspraken.update', $afspraak->Id) }}">
@@ -54,7 +63,7 @@
                             <label for="medewerker_id" class="text-sm font-bold text-gray-800 mb-2">Medewerker <span class="text-red-500">*</span></label>
                             <select name="medewerker_id" id="medewerker_id" required class="border border-gray-300 rounded-xl px-4 py-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white">
                                 @foreach($medewerkers as $medewerker)
-                                    <option value="{{ $medewerker->Id }}" {{ $medewerker->Id == $afspraak->MedewerkerId ? 'selected' : '' }}>
+                                    <option value="{{ $medewerker->Id }}" {{ old('medewerker_id', $afspraak->MedewerkerId) == $medewerker->Id ? 'selected' : '' }}>
                                         {{ $medewerker->Naam }}
                                     </option>
                                 @endforeach
@@ -66,7 +75,7 @@
                             <label for="behandeling_id" class="text-sm font-bold text-gray-800 mb-2">Behandeling <span class="text-red-500">*</span></label>
                             <select name="behandeling_id" id="behandeling_id" required class="border border-gray-300 rounded-xl px-4 py-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white">
                                 @foreach($behandelingen as $behandeling)
-                                    <option value="{{ $behandeling->Id }}" {{ $behandeling->Id == $afspraak->BehandelingId ? 'selected' : '' }}>
+                                    <option value="{{ $behandeling->Id }}" {{ old('behandeling_id', $afspraak->BehandelingId) == $behandeling->Id ? 'selected' : '' }}>
                                         {{ $behandeling->Naam }}
                                     </option>
                                 @endforeach
@@ -76,13 +85,19 @@
                         <!-- Datum (Date input) -->
                         <div class="flex flex-col">
                             <label for="datum" class="text-sm font-bold text-gray-800 mb-2">Datum <span class="text-red-500">*</span></label>
-                            <input type="date" name="datum" id="datum" required value="{{ date('Y-m-d', strtotime($afspraak->Datum)) }}" class="border border-gray-300 rounded-xl px-4 py-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white">
+                            <input type="date" name="datum" id="datum" required value="{{ old('datum', date('Y-m-d', strtotime($afspraak->Datum))) }}" class="border @error('datum') border-red-500 @else border-gray-300 @enderror rounded-xl px-4 py-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white">
+                            @error('datum')
+                                <span class="text-xs text-red-600 mt-1.5 font-semibold">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Starttijd (Time input) -->
                         <div class="flex flex-col">
                             <label for="starttijd" class="text-sm font-bold text-gray-800 mb-2">Starttijd <span class="text-red-500">*</span></label>
-                            <input type="time" name="starttijd" id="starttijd" required value="{{ date('H:i', strtotime($afspraak->Starttijd)) }}" class="border border-gray-300 rounded-xl px-4 py-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white">
+                            <input type="time" name="starttijd" id="starttijd" required value="{{ old('starttijd', date('H:i', strtotime($afspraak->Starttijd))) }}" class="border @error('starttijd') border-red-500 @else border-gray-300 @enderror rounded-xl px-4 py-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white">
+                            @error('starttijd')
+                                <span class="text-xs text-red-600 mt-1.5 font-semibold">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Duur (Readonly) -->
@@ -101,9 +116,9 @@
                         <div class="flex flex-col">
                             <label for="status" class="text-sm font-bold text-gray-800 mb-2">Status <span class="text-red-500">*</span></label>
                             <select name="status" id="status" required class="border border-gray-300 rounded-xl px-4 py-2.5 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white">
-                                <option value="Inbehandeling" {{ $afspraak->Status === 'Inbehandeling' ? 'selected' : '' }}>Inbehandeling</option>
-                                <option value="Behandeld" {{ $afspraak->Status === 'Behandeld' ? 'selected' : '' }}>Behandeld</option>
-                                <option value="Geannuleerd" {{ $afspraak->Status === 'Geannuleerd' ? 'selected' : '' }}>Geannuleerd</option>
+                                <option value="Inbehandeling" {{ old('status', $afspraak->Status) === 'Inbehandeling' ? 'selected' : '' }}>Inbehandeling</option>
+                                <option value="Behandeld" {{ old('status', $afspraak->Status) === 'Behandeld' ? 'selected' : '' }}>Behandeld</option>
+                                <option value="Geannuleerd" {{ old('status', $afspraak->Status) === 'Geannuleerd' ? 'selected' : '' }}>Geannuleerd</option>
                             </select>
                         </div>
 
