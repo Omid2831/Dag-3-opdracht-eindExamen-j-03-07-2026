@@ -54,7 +54,7 @@ class KlantModel
     public function update(int $id, array $data): bool
     {
         try {
-            DB::statement('CALL SP_Klant_Update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+            $success = DB::statement('CALL SP_Klant_Update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
                 $id,
                 $data['Voornaam'],
                 $data['Tussenvoegsel'] ?? null,
@@ -69,7 +69,7 @@ class KlantModel
                 $data['Mobiel']
             ]);
             Log::info("Successfully updated customer details for ID {$id} via SP_Klant_Update");
-            return true;
+            return (bool) $success;
         } catch (Throwable $e) {
             Log::error("Failed to update customer details for ID {$id} via SP_Klant_Update: " . $e->getMessage());
             return false;
