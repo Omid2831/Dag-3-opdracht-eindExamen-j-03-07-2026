@@ -9,7 +9,7 @@
 
         {{-- Error Alert --}}
         @if (session('error') || $errors->any())
-            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg shadow-sm">
+            <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg shadow-sm">
                 <span class="font-semibold text-sm">Klantgegevens zijn niet bijgewerkt.</span>
             </div>
         @endif
