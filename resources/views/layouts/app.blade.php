@@ -31,6 +31,11 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <!-- Footer -->
+            <footer class="py-6 text-center text-xs text-gray-500 font-medium">
+                &copy; 2026 Kniploket Tiko - Alle rechten voorbehouden
+            </footer>
         </div>
     </body>
 </html>

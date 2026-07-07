@@ -32,7 +32,14 @@ class User extends Authenticatable
 
     public function hasRole(string $role): bool
     {
-        return $this->role === $role;
+        $mappedRoles = match ($role) {
+            'admin' => ['admin', 'eigenaar'],
+            'manager' => ['manager', 'medewerker'],
+            'user' => ['user', 'klant'],
+            default => [$role],
+        };
+
+        return in_array($this->role, $mappedRoles);
     }
 
     public function isAdmin(): bool
