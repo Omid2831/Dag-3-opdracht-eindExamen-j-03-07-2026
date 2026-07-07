@@ -12,8 +12,8 @@
 
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
                 <form method="GET" action="{{ route('admin.behandelingen') }}"
-                    class="flex flex-col gap-4 sm:flex-row sm:items-end">
-                    <div class="flex flex-col w-full sm:w-auto">
+                    class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-end">
+                    <div class="flex flex-col w-full sm:w-auto sm:ml-auto">
                         <label class="text-xs font-semibold text-gray-500 mb-1.5">Behandeling selecteren</label>
                         <select name="soort"
                             class="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white w-full sm:w-64">
