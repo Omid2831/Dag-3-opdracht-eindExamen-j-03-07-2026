@@ -3,8 +3,8 @@
     <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Breadcrumbs --}}
         <nav class="text-sm font-medium text-gray-500 mb-4">
-            <a href="{{ route('admin.dashboard') }}" class="hover:text-gray-700">Home</a> / 
-            <a href="{{ route('admin.klanten') }}" class="hover:text-gray-700">Klanten</a> / 
+            <a href="{{ route('admin.dashboard') }}" class="hover:text-gray-700 text-[#b91c1c]">Home</a> / 
+            <a href="{{ route('admin.klanten') }}" class="hover:text-gray-700 text-[#b91c1c]">Klanten</a> / 
             <span class="text-gray-900">Wijzigen</span>
         </nav>
 
