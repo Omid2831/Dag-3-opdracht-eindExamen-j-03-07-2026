@@ -15,11 +15,11 @@
             </h1>
 
             <!-- Filter Section -->
-            <form method="GET" action="{{ route('admin.afspraken') }}" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
-                <div class="flex justify-end items-end space-x-3">
-                    <div class="flex flex-col">
-                        <label for="status" class="text-xs font-semibold text-gray-500 mb-1.5">Status selecteren</label>
-                        <select name="status" id="status" class="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white w-64">
+            <form method="GET" action="{{ route('admin.afspraken') }}" class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6 flex flex-col sm:flex-row justify-end">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 w-full sm:w-auto">
+                    <div class="w-full sm:w-64">
+                        <label for="status" class="block text-xs font-semibold text-gray-500 mb-1.5">Status selecteren</label>
+                        <select name="status" id="status" class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white h-10">
                             <option value="Alle statussen" {{ ($selectedStatus ?? 'Alle statussen') === 'Alle statussen' ? 'selected' : '' }}>Alle statussen</option>
                             <option value="Inbehandeling" {{ ($selectedStatus ?? '') === 'Inbehandeling' ? 'selected' : '' }}>Inbehandeling</option>
                             <option value="Behandeld" {{ ($selectedStatus ?? '') === 'Behandeld' ? 'selected' : '' }}>Behandeld</option>
@@ -27,12 +27,14 @@
                             <option value="Geannuleerd" {{ ($selectedStatus ?? '') === 'Geannuleerd' ? 'selected' : '' }}>Geannuleerd</option>
                         </select>
                     </div>
-                    <button type="submit" class="bg-[#b91c1c] hover:bg-red-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
-                        Maak selectie
-                    </button>
-                    <a href="{{ route('admin.afspraken') }}" class="bg-slate-500 hover:bg-slate-600 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm text-center inline-block">
-                        Reset
-                    </a>
+                    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <button type="submit" class="bg-[#b91c1c] hover:bg-red-800 text-white text-sm font-bold h-10 px-5 rounded-xl transition shadow-sm w-full sm:w-auto">
+                            Maak selectie
+                        </button>
+                        <a href="{{ route('admin.afspraken') }}" class="bg-slate-500 hover:bg-slate-600 text-white text-sm font-bold h-10 px-5 flex items-center justify-center rounded-xl transition shadow-sm w-full sm:w-auto">
+                            Reset
+                        </a>
+                    </div>
                 </div>
             </form>
 
@@ -76,8 +78,8 @@
                     <div></div>
                 </div>
 
-                <!-- Table -->
-                <div class="overflow-x-auto">
+                <!-- Desktop Table View -->
+                <div class="hidden lg:block overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-100 text-sm text-left">
                         <thead>
                             <tr class="bg-[#b91c1c] text-white font-bold text-xs uppercase tracking-wide">
@@ -122,6 +124,57 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Mobile & Tablet Card Grid View -->
+                <div class="block lg:hidden bg-gray-50 p-4 rounded-2xl">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @forelse($afspraken as $afspraak)
+                            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition duration-150 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex justify-between items-start gap-4 mb-3">
+                                        <div>
+                                            <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider mb-1.5
+                                                @if($afspraak->Status === 'Geannuleerd') bg-red-50 text-red-700 border border-red-100
+                                                @elseif($afspraak->Status === 'Inbehandeling') bg-orange-50 text-orange-700 border border-orange-100
+                                                @else bg-green-50 text-green-700 border border-green-100
+                                                @endif">
+                                                {{ $afspraak->Status }}
+                                            </span>
+                                            <h3 class="text-sm font-extrabold text-gray-900 mt-1">{{ $afspraak->KlantNaam }}</h3>
+                                        </div>
+                                        <a href="{{ route('admin.afspraken.show', $afspraak->Id) }}" class="inline-flex items-center justify-center border border-blue-500 hover:bg-blue-50 text-blue-500 font-bold py-1.5 px-3 rounded-lg text-xs transition duration-150 bg-white shadow-sm whitespace-nowrap">
+                                            Details
+                                        </a>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-y-3 gap-x-2 text-xs border-t border-gray-50 pt-3">
+                                        <div class="flex flex-col">
+                                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Medewerker</span>
+                                            <span class="font-semibold text-gray-700">{{ $afspraak->MedewerkerNaam }}</span>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Behandeling</span>
+                                            <span class="font-semibold text-gray-700">{{ $afspraak->BehandelingNaam }}</span>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Datum</span>
+                                            <span class="font-semibold text-gray-700">{{ date('d-m-Y', strtotime($afspraak->Datum)) }}</span>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Tijd &amp; Duur</span>
+                                            <span class="font-semibold text-gray-700">
+                                                {{ date('H:i', strtotime($afspraak->Starttijd)) }} - {{ date('H:i', strtotime($afspraak->Eindtijd)) }} <span class="text-[10px] text-gray-400">({{ $afspraak->Duur }}m)</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-span-full py-12 px-6 text-center text-gray-500 font-bold text-sm bg-white rounded-2xl border border-gray-100">
+                                Er zijn geen afspraken bekend die de geselecteerde status hebben
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
 
