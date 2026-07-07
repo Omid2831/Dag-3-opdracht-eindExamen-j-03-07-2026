@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+Use DB;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Log;
 
 class Product extends Model
 {
@@ -20,8 +23,8 @@ class Product extends Model
             return $results ?? [];
         } catch (\Exception $e) {
             Log::error('Failed to fetch products: ' . $e->getMessage());
-            return [];
         }
+        return [];
     }
 
     /**
@@ -39,8 +42,8 @@ class Product extends Model
             return $results[0] ?? (object)[];
         } catch (\Exception $e) {
             Log::error("Failed to fetch product ID {$id}: " . $e->getMessage());
-            return (object)[];
         }
+         return (object)[];
     }
 
     /**
@@ -58,8 +61,8 @@ class Product extends Model
             return $results;
         } catch (\Exception $e) {
             Log::error("Failed to update product ID {$id}: " . $e->getMessage());
-            return false;
         }
+         return false;
     }
 
     /**
