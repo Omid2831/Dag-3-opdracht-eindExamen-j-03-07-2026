@@ -1,28 +1,36 @@
 USE kapsalon_db;
 
-
 DELIMITER //
 
-CREATE PROCEDURE UpdateProductVerkoopprijs(
+DROP PROCEDURE IF EXISTS UpdateProductPrijs //
+
+CREATE PROCEDURE UpdateProductPrijs(
     IN p_ProductId INT UNSIGNED,
     IN p_NieuwePrijs DECIMAL(10,2)
 )
 BEGIN
     DECLARE v_InkoopPrijs DECIMAL(10,2);
-    
-    -- Haal de huidige inkoopprijs op
+
+    -- Error handling to ensure database consistency
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+    -- Fetch the current cost price
     SELECT InkoopPrijs INTO v_InkoopPrijs FROM Product WHERE Id = p_ProductId;
-    
-    -- Controleer of de prijs minimaal 30% boven inkoopprijs ligt
-    -- Formule: Inkoop * 1.30
+
+    -- Business logic check: Margin must be at least 30%
     IF p_NieuwePrijs < (v_InkoopPrijs * 1.30) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Verkoopprijs moet minimaal 30 procent boven de inkoopprijs liggen.';
+        SELECT 0 AS success, 'Verkoopprijs moet minimaal 30 procent boven de inkoopprijs liggen.' AS message;
+        ROLLBACK;
     ELSE
-        -- Voer de update uit
-        UPDATE Product 
-        SET VerkoopPrijs = p_NieuwePrijs 
-        WHERE Id = p_ProductId;
+        UPDATE Product SET VerkoopPrijs = p_NieuwePrijs WHERE Id = p_ProductId;
+        SELECT 1 AS success, 'Prijs succesvol bijgewerkt.' AS message;
+        COMMIT;
     END IF;
 END //
 
