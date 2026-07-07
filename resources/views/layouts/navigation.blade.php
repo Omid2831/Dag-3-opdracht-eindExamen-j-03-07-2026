@@ -1,3 +1,85 @@
+@if(Auth::user()->role === 'eigenaar')
+    <nav x-data="{ open: false }" class="bg-[#b91c1c] text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-4 xl:space-x-10 shrink min-w-0">
+                    <!-- Logo -->
+                    <div class="shrink-0 flex items-center">
+                        <span class="font-extrabold text-lg xl:text-xl tracking-wider text-white whitespace-nowrap">
+                            KNIPLOKET TIKO
+                        </span>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <div class="hidden lg:flex lg:space-x-1 xl:space-x-2 2xl:space-x-3 lg:text-[10px] xl:text-[11px] 2xl:text-xs font-semibold whitespace-nowrap min-w-0 items-center">
+                        <a href="#" class="text-white px-2 py-1.5 rounded-lg transition hover:text-red-200">Accounts</a>
+                        <a href="#" class="text-white px-2 py-1.5 rounded-lg transition hover:text-red-200">Medewerkers</a>
+                        <a href="#" class="text-white px-2 py-1.5 rounded-lg transition hover:text-red-200">Beschikbaarheid</a>
+                        <a href="{{ route('admin.klanten') }}" class="text-white px-2 py-1.5 rounded-lg transition {{ request()->routeIs('admin.klanten') ? 'bg-[#981414] font-bold shadow-inner' : 'hover:text-red-200' }}">Klanten</a>
+                        <a href="{{ route('admin.afspraken') }}" class="text-white px-2 py-1.5 rounded-lg transition {{ request()->routeIs('admin.afspraken') ? 'bg-[#981414] font-bold shadow-inner' : 'hover:text-red-200' }}">Afspraken</a>
+                        <a href="{{ route('admin.behandelingen') }}" class="text-white px-2 py-1.5 rounded-lg transition {{ request()->routeIs('admin.behandelingen') ? 'bg-[#981414] font-bold shadow-inner' : 'hover:text-red-200' }}">Behandelingen</a>
+                        <a href="{{ route('admin.producten') }}" class="text-white px-2 py-1.5 rounded-lg transition {{ request()->routeIs('admin.producten') ? 'bg-[#981414] font-bold shadow-inner' : 'hover:text-red-200' }}">Producten</a>
+                        <a href="#" class="text-white px-2 py-1.5 rounded-lg transition hover:text-red-200">Bestellingen</a>
+                    </div>
+                </div>
+
+                <!-- Right Side: User Name and Logout -->
+                <div class="hidden lg:flex lg:items-center lg:space-x-3 shrink-0">
+                    <span class="hidden xl:inline text-xs text-red-100 whitespace-nowrap">
+                        {{ Auth::user()->name }} ({{ Auth::user()->role }})
+                    </span>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="border border-white/80 hover:bg-white hover:text-[#b91c1c] text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 whitespace-nowrap">
+                            Uitloggen
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Mobile Hamburger -->
+                <div class="-me-2 flex items-center lg:hidden">
+                    <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-red-200 hover:text-white hover:bg-red-800 focus:outline-none transition">
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Responsive Navigation Menu -->
+        <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden bg-[#a11818] border-t border-red-800">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">Accounts</a>
+                <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">Medewerkers</a>
+                <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">Beschikbaarheid</a>
+                <a href="{{ route('admin.klanten') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">Klanten</a>
+                <a href="{{ route('admin.afspraken') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">Afspraken</a>
+                <a href="{{ route('admin.behandelingen') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">Behandelingen</a>
+                <a href="{{ route('admin.producten') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">Producten</a>
+                <a href="#" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">Bestellingen</a>
+            </div>
+
+            <!-- Responsive User Info -->
+            <div class="pt-4 pb-1 border-t border-red-800">
+                <div class="px-4">
+                    <div class="font-medium text-base text-white">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-red-200">{{ Auth::user()->email }}</div>
+                </div>
+
+                <div class="mt-3 space-y-1">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-white hover:bg-red-800 transition">
+                            Uitloggen
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+@else
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,3 +180,4 @@
         </div>
     </div>
 </nav>
+@endif
