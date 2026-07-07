@@ -2,10 +2,12 @@
     {{-- Exam Assignment: Detailed customer information view --}}
     <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Breadcrumbs --}}
-        <nav class="text-sm font-medium text-gray-500 mb-4">
-            <a href="{{ route('admin.dashboard') }}" class="hover:text-gray-700">Home</a> / 
-            <a href="{{ route('admin.klanten') }}" class="hover:text-gray-700">Klanten</a> / 
-            <span class="text-gray-900">Detail</span>
+        <nav class="text-sm font-semibold text-gray-500 mb-4">
+            <a href="{{ route('admin.dashboard') }}" class="text-[#b91c1c] hover:underline">Home</a>
+            <span class="mx-1 text-gray-400">/</span>
+            <a href="{{ route('admin.klanten') }}" class="text-[#b91c1c] hover:underline">Klanten</a>
+            <span class="mx-1 text-gray-400">/</span>
+            <span class="text-gray-400">Detail</span>
         </nav>
 
         {{-- Heading --}}

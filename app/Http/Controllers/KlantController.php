@@ -6,7 +6,6 @@ use App\Models\KlantModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class KlantController extends Controller
@@ -18,8 +17,6 @@ class KlantController extends Controller
 
     /**
      * KlantController constructor.
-     *
-     * @param KlantModel $klantModel
      */
     public function __construct(KlantModel $klantModel)
     {
@@ -29,22 +26,19 @@ class KlantController extends Controller
 
     /**
      * Display a listing of active customers, optionally filtered by postcode.
-     *
-     * @param Request $request
-     * @return View
      */
     public function index(Request $request): View
     {
         // Get postcode search parameter from GET request
         $postcode = $request->input('postcode');
-        $klanten = $this->klantModel->read($postcode);
+        $klanten = $this->klantModel->read($postcode) ?? [];
 
         // Handle collection pagination manually since we call raw stored procedures (4 items per page)
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $perPage = 4;
         $col = collect($klanten);
         $items = $col->slice(($currentPage - 1) * $perPage, $perPage)->all();
-        
+
         $paginated = new LengthAwarePaginator(
             $items,
             $col->count(),
@@ -52,28 +46,27 @@ class KlantController extends Controller
             $currentPage,
             [
                 'path' => LengthAwarePaginator::resolveCurrentPath(),
-                'query' => $request->query()
+                'query' => $request->query(),
             ]
         );
 
         return view('klant.index', [
             'klanten' => $paginated,
-            'postcode' => $postcode
+            'postcode' => $postcode,
         ]);
     }
 
     /**
      * Display details of a single customer.
      *
-     * @param int $id
      * @return View|RedirectResponse
      */
     public function show(int $id)
     {
         // Retrieve customer details using readById method from model
-        $klant = $this->klantModel->readById($id);
+        $klant = $this->klantModel->readById($id) ?? [];
 
-        if (empty((array)$klant)) {
+        if (empty((array) $klant)) {
             return redirect()
                 ->route('admin.klanten')
                 ->with('error', 'Klant niet gevonden.');
@@ -85,15 +78,14 @@ class KlantController extends Controller
     /**
      * Show the form for editing customer details.
      *
-     * @param int $id
      * @return View|RedirectResponse
      */
     public function edit(int $id)
     {
         // Retrieve existing customer details to prefill form fields
-        $klant = $this->klantModel->readById($id);
+        $klant = $this->klantModel->readById($id) ?? [];
 
-        if (empty((array)$klant)) {
+        if (empty((array) $klant)) {
             return redirect()
                 ->route('admin.klanten')
                 ->with('error', 'Klant niet gevonden.');
@@ -104,10 +96,6 @@ class KlantController extends Controller
 
     /**
      * Update customer details in the database.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return RedirectResponse
      */
     public function update(Request $request, int $id): RedirectResponse
     {
@@ -125,13 +113,9 @@ class KlantController extends Controller
         ]);
 
         // Manually check if the email is already taken by another active contact
-        $existing = DB::select('
-            SELECT 1 FROM Contact c
-            JOIN KlantPerContact kpc ON c.Id = kpc.ContactId
-            WHERE c.Email = ? AND kpc.KlantId <> ? AND c.IsActief = 1
-        ', [$request->input('Email'), $id]);
+        $existing = $this->klantModel->getExistingActiveContactByEmail($request->input('Email'), $id) ?? [];
 
-        if (!empty($existing)) {
+        if (! empty($existing)) {
             return redirect()
                 ->back()
                 ->withInput()
@@ -157,7 +141,7 @@ class KlantController extends Controller
             'Postcode' => $request->input('Postcode'),
             'Plaats' => $request->input('Plaats'),
             'Email' => $request->input('Email'),
-            'Mobiel' => $request->input('Mobiel')
+            'Mobiel' => $request->input('Mobiel'),
         ];
 
         // Execute update on customer details using model
