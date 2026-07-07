@@ -75,7 +75,7 @@ class KlantController extends Controller
 
         if (empty((array)$klant)) {
             return redirect()
-                ->route('klant.index')
+                ->route('admin.klanten')
                 ->with('error', 'Klant niet gevonden.');
         }
 
@@ -95,7 +95,7 @@ class KlantController extends Controller
 
         if (empty((array)$klant)) {
             return redirect()
-                ->route('klant.index')
+                ->route('admin.klanten')
                 ->with('error', 'Klant niet gevonden.');
         }
 
