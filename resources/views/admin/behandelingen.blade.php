@@ -12,11 +12,11 @@
 
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
                 <form method="GET" action="{{ route('admin.behandelingen') }}"
-                    class="flex justify-end items-end space-x-3">
-                    <div class="flex flex-col">
+                    class="flex flex-col gap-4 sm:flex-row sm:items-end">
+                    <div class="flex flex-col w-full sm:w-auto">
                         <label class="text-xs font-semibold text-gray-500 mb-1.5">Behandeling selecteren</label>
                         <select name="soort"
-                            class="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white w-64">
+                            class="border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#b91c1c] bg-white w-full sm:w-64">
                             <option value="">Alle behandelingen</option>
                             <option value="Combi behandelingen" {{ request('soort') == 'Combi behandelingen' ? 'selected' : '' }}>Combi behandelingen</option>
                             <option value="Extensions" {{ request('soort') == 'Extensions' ? 'selected' : '' }}>Extensions
@@ -26,22 +26,57 @@
                             <option value="Overig" {{ request('soort') == 'Overig' ? 'selected' : '' }}>Overig</option>
                         </select>
                     </div>
-                    <button type="submit"
-                        class="bg-[#b91c1c] hover:bg-red-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
-                        Maak selectie
-                    </button>
-                    <a href="{{ route('admin.behandelingen') }}"
-                        class="bg-slate-500 hover:bg-slate-600 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
-                        Reset
-                    </a>
+                    <div class="flex flex-row flex-wrap gap-3 self-end">
+                        <button type="submit"
+                            class="bg-[#b91c1c] hover:bg-red-800 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
+                            Maak selectie
+                        </button>
+                        <a href="{{ route('admin.behandelingen') }}"
+                            class="text-center bg-slate-500 hover:bg-slate-600 text-white px-5 py-2 rounded-xl text-sm font-bold transition shadow-sm">
+                            Reset
+                        </a>
+                    </div>
                 </form>
             </div>
 
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-sm text-gray-400 font-semibold">
-                        Gevonden behandelingen - {{ $behandelingen->total() }} behandeling(en)
-                    </span>
+                <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4 mb-6 w-full">
+                    <div class="text-left">
+                        <span class="text-sm text-gray-400 font-semibold">
+                            Gevonden behandelingen - {{ $behandelingen->total() }} behandeling(en)
+                        </span>
+                    </div>
+
+                    <div class="flex justify-center">
+                        @if($behandelingen->hasPages())
+                            @php $pagination = $behandelingen->appends(request()->query()); @endphp
+                            <div class="w-full max-w-full overflow-x-auto">
+                                <div class="inline-flex items-center gap-2 whitespace-nowrap text-xs">
+                                    @if($pagination->onFirstPage())
+                                        <span class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-300 cursor-not-allowed">‹</span>
+                                    @else
+                                        <a href="{{ $pagination->previousPageUrl() }}" class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">‹</a>
+                                    @endif
+
+                                    @foreach($pagination->getUrlRange(1, $pagination->lastPage()) as $page => $url)
+                                        @if($page == $pagination->currentPage())
+                                            <span class="px-3 py-1.5 bg-[#b91c1c] text-white rounded font-bold">{{ $page }}</span>
+                                        @else
+                                            <a href="{{ $url }}" class="px-3 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">{{ $page }}</a>
+                                        @endif
+                                    @endforeach
+
+                                    @if($pagination->hasMorePages())
+                                        <a href="{{ $pagination->nextPageUrl() }}" class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-600 hover:bg-gray-50">›</a>
+                                    @else
+                                        <span class="px-2.5 py-1.5 border border-gray-200 rounded text-gray-300 cursor-not-allowed">›</span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="text-right md:text-right"></div>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -79,10 +114,6 @@
                             @endforelse
                         </tbody>
                     </table>
-                </div>
-
-                <div class="mt-6">
-                    {{ $behandelingen->appends(request()->query())->links() }}
                 </div>
             </div>
 
