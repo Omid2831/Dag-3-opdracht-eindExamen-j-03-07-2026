@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Categorie;
-use Illuminate\Http\Request;
+use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class ProductController extends Controller
 {
     private Product $product;
+
     private Categorie $categorie;
 
     /**
      * ProductController constructor.
      * Injects the Product, Categorie model wrapper.
-     *
-     * @param Product $product
-     * @param Categorie $categorie
      */
     public function __construct(
         Product $product,
@@ -33,9 +31,6 @@ class ProductController extends Controller
 
     /**
      * Display a listing of all products, optionally filtered by category.
-     *
-     * @param Request $request
-     * @return View
      */
     public function index(Request $request): View
     {
@@ -54,16 +49,14 @@ class ProductController extends Controller
 
     /**
      * Display details of a single product.
-     *
-     * @param int $id
-     * @return View|RedirectResponse
      */
     public function show(int $id): View|RedirectResponse
     {
         $productDetail = $this->product->getProductById($id);
 
-        if (!isset($productDetail->Id)) {
+        if (! isset($productDetail->Id)) {
             session()->flash('error', 'Product niet gevonden.');
+
             return redirect()->route('admin.producten');
         }
 
@@ -74,16 +67,14 @@ class ProductController extends Controller
 
     /**
      * Show the form to edit the product's expiration date.
-     *
-     * @param int $id
-     * @return View|RedirectResponse
      */
     public function edit(int $id): View|RedirectResponse
     {
         $productDetail = $this->product->getProductById($id);
-    
-        if (!isset($productDetail->Id)) {
+
+        if (! isset($productDetail->Id)) {
             session()->flash('error', 'Product niet gevonden.');
+
             return redirect()->route('admin.producten');
         }
 
@@ -95,51 +86,58 @@ class ProductController extends Controller
     /**
      * Update the product's expiration date in the database.
      *
-     * @param Request $request
-     * @param int $id
-     * @return RedirectResponse
      * @throws ValidationException
      */
     public function update(Request $request, int $id): RedirectResponse
     {
         $productDetail = $this->product->getProductById($id);
 
-        if (!isset($productDetail->Id)) {
+        if (! isset($productDetail->Id)) {
             session()->flash('error', 'Product niet gevonden.');
+
             return redirect()->route('admin.producten');
         }
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'Nieuwe_houdbaarheidsdatum' => [
                 'required',
                 'date',
                 function ($attribute, $value, $fail) use ($productDetail) {
-                    $current = Carbon::parse($productDetail->Houdbaarheidsdatum);
-                    $new = Carbon::parse($value);
-                    
+                    $current = Carbon::parse($productDetail->Houdbaarheidsdatum)->startOfDay();
+                    $new = Carbon::parse($value)->startOfDay();
+
                     // The new expiration date cannot be before the current expiration date
                     if ($new->lessThan($current)) {
                         $fail('De nieuwe houdbaarheidsdatum kan niet in het verleden liggen ten opzichte van de huidige datum.');
+
                         return;
                     }
-                    
+
                     // The new expiration date cannot be extended by more than 7 days
-                    if ($new->diffInDays($current) > 7) {
+                    if ($new->greaterThan($current->copy()->addDays(7))) {
                         $fail('De houdbaarheidsdatum is met meer dan 7 dagen verlengd.');
                     }
-                }
+                },
             ],
         ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', 'Gegevens niet bijgewerkt');
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $newDate = $request->input('Nieuwe_houdbaarheidsdatum');
         $success = $this->product->updateProductExpiration($id, $newDate);
 
         if ($success) {
             session()->flash('success', 'Houdbaarheidsdatum bijgewerkt');
+
             return redirect()->route('admin.producten.show', $id);
         }
 
         session()->flash('error', 'Gegevens niet bijgewerkt');
+
         return redirect()->back();
     }
 }

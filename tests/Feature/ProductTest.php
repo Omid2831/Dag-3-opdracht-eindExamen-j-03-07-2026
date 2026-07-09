@@ -12,15 +12,11 @@ class ProductTest extends TestCase
 
     /**
      * Set up tests to run with database seeding.
-     *
-     * @var bool
      */
     protected bool $seed = true;
 
     /**
      * Test if the owner can view all products.
-     *
-     * @return void
      */
     public function test_owner_can_view_all_products(): void
     {
@@ -61,8 +57,6 @@ class ProductTest extends TestCase
 
     /**
      * Test filtering products by category.
-     *
-     * @return void
      */
     public function test_owner_can_filter_products_by_category(): void
     {
@@ -83,8 +77,6 @@ class ProductTest extends TestCase
 
     /**
      * Test filter with empty category (Accessoires - category 4) returns empty state message.
-     *
-     * @return void
      */
     public function test_owner_filters_category_with_no_products(): void
     {
@@ -101,8 +93,6 @@ class ProductTest extends TestCase
 
     /**
      * Test viewing product details.
-     *
-     * @return void
      */
     public function test_owner_can_view_product_details(): void
     {
@@ -121,8 +111,6 @@ class ProductTest extends TestCase
 
     /**
      * Test viewing non-existent product details redirects back.
-     *
-     * @return void
      */
     public function test_viewing_non_existent_product_redirects(): void
     {
@@ -137,8 +125,6 @@ class ProductTest extends TestCase
 
     /**
      * Test editing a product's expiration date form.
-     *
-     * @return void
      */
     public function test_owner_can_view_edit_expiration_form(): void
     {
@@ -155,8 +141,6 @@ class ProductTest extends TestCase
 
     /**
      * Test updating product expiration date successfully within 7 days.
-     *
-     * @return void
      */
     public function test_owner_can_update_expiration_date_successfully(): void
     {
@@ -179,48 +163,44 @@ class ProductTest extends TestCase
 
     /**
      * Test update fails if the date is extended by more than 7 days.
-     *
-     * @return void
      */
     public function test_update_fails_if_date_extended_by_more_than_seven_days(): void
     {
         $owner = User::where('email', 'eigenaar@kniplokettiko.nl')->first();
 
-        // Hydrating Shampoo expiration is '2027-07-01'. Extend by 10 days to '2027-07-11'.
+        // Repair Conditioner expiration is '2027-10-15'. Extend by 10 days to '2027-10-25'.
         $response = $this->actingAs($owner)
-            ->from(route('admin.producten.edit', 1))
-            ->post(route('admin.producten.update', 1), [
-                'Nieuwe_houdbaarheidsdatum' => '2027-07-11',
+            ->from(route('admin.producten.edit', 2))
+            ->post(route('admin.producten.update', 2), [
+                'Nieuwe_houdbaarheidsdatum' => '2027-10-25',
             ]);
 
-        $response->assertRedirect(route('admin.producten.edit', 1))
+        $response->assertRedirect(route('admin.producten.edit', 2))
             ->assertSessionHasErrors(['Nieuwe_houdbaarheidsdatum'])
             ->assertSessionHas('error', 'Gegevens niet bijgewerkt');
 
         // Check DB was NOT updated
         $this->assertDatabaseHas('Product', [
-            'Id' => 1,
-            'Houdbaarheidsdatum' => '2027-07-01',
+            'Id' => 2,
+            'Houdbaarheidsdatum' => '2027-10-15',
         ]);
     }
 
     /**
      * Test update fails if the date is set in the past relative to the current expiration date.
-     *
-     * @return void
      */
     public function test_update_fails_if_date_is_in_the_past(): void
     {
         $owner = User::where('email', 'eigenaar@kniplokettiko.nl')->first();
 
-        // Hydrating Shampoo expiration is '2027-07-01'. Set to '2027-06-30'.
+        // Repair Conditioner expiration is '2027-10-15'. Set to '2027-10-14'.
         $response = $this->actingAs($owner)
-            ->from(route('admin.producten.edit', 1))
-            ->post(route('admin.producten.update', 1), [
-                'Nieuwe_houdbaarheidsdatum' => '2027-06-30',
+            ->from(route('admin.producten.edit', 2))
+            ->post(route('admin.producten.update', 2), [
+                'Nieuwe_houdbaarheidsdatum' => '2027-10-14',
             ]);
 
-        $response->assertRedirect(route('admin.producten.edit', 1))
+        $response->assertRedirect(route('admin.producten.edit', 2))
             ->assertSessionHasErrors(['Nieuwe_houdbaarheidsdatum'])
             ->assertSessionHas('error', 'Gegevens niet bijgewerkt');
     }
