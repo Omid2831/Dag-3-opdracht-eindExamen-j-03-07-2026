@@ -23,7 +23,7 @@ class BehandelingController extends Controller
         $results = $this->behandelingModel->getAllBehandelingen() ?? [];
 
         Log::info('Successfully fetched behandelingen via SP_Behandeling_Read');
-        
+
         $collection = collect($results);
 
         // I use a filter for soort if it's provided in the request
@@ -96,7 +96,8 @@ class BehandelingController extends Controller
             return redirect()->route('admin.behandelingen.show', ['id' => $request->product_id])
                  ->with('success', $result->message);
         }
-
+        
+        log::info(" Lukte niet om de prijs van product/behandelingen ID aantepassen {$request->product_id}: ");
         // Fallback voor als het resultaat leeg is of success 0 is
         $errorMessage = (is_object($result)) ? $result->message : 'Er is een fout opgetreden in de database.';
 
