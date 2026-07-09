@@ -22,7 +22,7 @@ class BehandelingController extends Controller
     {
         $results = $this->behandelingModel->getAllBehandelingen() ?? [];
 
-        Log::info('Successfully fetched behandelingen via SP_Behandeling_Read');
+        Log::info('Succesfol alle behandelingen opgehaald', ['totaal' => count($results)]);
 
         $collection = collect($results);
 
