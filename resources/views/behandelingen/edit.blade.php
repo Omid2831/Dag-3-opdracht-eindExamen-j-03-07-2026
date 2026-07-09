@@ -21,6 +21,7 @@
             </h1>
 
             <form action="{{ route('admin.behandelingen.update', $producten[0]->ProductId) }}" method="POST">
+                {{-- // Cross-site request forgeries --}}
                 @csrf
                 @method('PUT')
 
