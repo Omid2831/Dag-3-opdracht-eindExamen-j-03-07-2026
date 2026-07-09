@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
+use Log;
 
 class BehandelingController extends Controller
 {
@@ -20,6 +21,9 @@ class BehandelingController extends Controller
     public function index(Request $request): View
     {
         $results = $this->behandelingModel->getAllBehandelingen() ?? [];
+
+        Log::info('Successfully fetched behandelingen via SP_Behandeling_Read');
+        
         $collection = collect($results);
 
         // I use a filter for soort if it's provided in the request
